@@ -36,5 +36,17 @@ namespace Data
             return Stock.FindAll(book => book.Title == title);
         }
 
+        public List<IBook> GetBooksById(List<Guid> Ids)
+        {
+            List<IBook> books = new List<IBook>();  
+            foreach (Guid id in Ids) 
+            {
+                List<IBook> tmp = Stock.FindAll(x => x.Id == id);
+                if (tmp.Count > 0)
+                    books.AddRange(tmp);
+            }
+            return books;
+        }
+
     }
 }
