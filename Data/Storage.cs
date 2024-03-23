@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Data
 {
-    internal class Storage
+    internal class Storage : IStorage
     {
         public List<IBook> Stock { get; }
         public Storage()
@@ -35,7 +35,6 @@ namespace Data
         {
             return Stock.FindAll(book => book.Title == title);
         }
-
 
     }
 }
