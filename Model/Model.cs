@@ -11,9 +11,11 @@ namespace Model
     {
         private ILogicLayer iLogicLayer;
 
+        public StoragePresentation storagePresentation { get; private set; }
         public Model(ILogicLayer? iLogicLayer) 
         {
-            this.iLogicLayer = iLogicLayer == null ? ILogicLayer.Create() : iLogicLayer; 
+            this.iLogicLayer = iLogicLayer == null ? ILogicLayer.Create() : iLogicLayer;
+            storagePresentation = new StoragePresentation(iLogicLayer.Shop);
         }
     }
 }
