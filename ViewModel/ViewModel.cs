@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -13,19 +14,18 @@ namespace ViewModel
 {
     public class ViewModel : INotifyPropertyChanged
     {
+
+        private Model.Model model;
         private ObservableCollection<BookPresentation> books;
-        private readonly Model.Model model;
-        public ICommand BookButtonClick { get; set; }
 
         public ViewModel()
         {
             this.model = new Model.Model(null);
-            this.books = new ObservableCollection<BookPresentation>(); 
-            foreach (BookPresentation book in model.storagePresentation.GetBooks())
+            this.books = new ObservableCollection<BookPresentation>();
+            foreach (BookPresentation book in this.model.StoragePresentation.GetBooks())
             {
-                Books.Add(book);
+                books.Add(book);
             }
-            Console.WriteLine(Books.Count);
         }
 
         public ObservableCollection<BookPresentation> Books
@@ -43,8 +43,7 @@ namespace ViewModel
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
+    public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

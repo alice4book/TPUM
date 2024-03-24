@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Text;
@@ -20,13 +21,14 @@ namespace Logic
         public List<BookDTO> GetBooks()
         {
             List<BookDTO> availableBooks = new List<BookDTO>();
+            
             foreach(IBook book in storage.Stock)
             {
                 availableBooks.Add(new BookDTO 
                 { 
                     Title = book.Title,
-                    Author = book.Author,
                     Description = book.Description,
+                    Author = book.Author,
                     Price = book.Price,
                     Type = book.Type.ToString(),
                     Id = book.Id
