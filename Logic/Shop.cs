@@ -36,13 +36,14 @@ namespace Logic
             return availableBooks;
         }
 
-        public void Sell(List<BookDTO> books)
+        public bool Sell(List<BookDTO> books)
         {
             List<Guid> bookIds = new List<Guid>();
             foreach (BookDTO book in books)
                 bookIds.Add(book.Id);
             List<IBook> booksDataLayer = storage.GetBooksById(bookIds);
             storage.RemoveBooks(booksDataLayer);
+            return true;
         }
     }
 }

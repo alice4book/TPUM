@@ -9,6 +9,6 @@ namespace Logic
     public interface IShop
     {
         List<BookDTO> GetBooks();
-        void Sell(List<BookDTO> books);
+        bool Sell(List<BookDTO> books);
     }
 }
