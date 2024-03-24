@@ -14,9 +14,9 @@ namespace Data
             Stock = new List<IBook>();
 
             Stock.Add(new Book("It", "Clown scary!", "Stephen King", 59.99f, BookType.Horror));
-            Stock.Add(new Book("This", "Clown scary!", "Stephen King", 19.99f, BookType.Horror));
+            Stock.Add(new Book("This", "Clown scary!", "Stephen King", 19.99f, BookType.Romance));
             Stock.Add(new Book("That", "Clown scary!", "Stephen King", 29.99f, BookType.Horror));
-        }
+          }
 
         public void RemoveBooks(List<IBook> books)
         {

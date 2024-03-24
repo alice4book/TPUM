@@ -5,31 +5,40 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:ViewModel;assembly=ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="850">
+        Title="MainWindow" Height="650" Width="1050">
     <Window.DataContext>
         <vm:ViewModel/>
     </Window.DataContext>
     <Grid>
         <Canvas Background="Bisque">
-            <StackPanel Canvas.Left="176" Canvas.Top="10" HorizontalAlignment="Center" Height="414" VerticalAlignment="Top">
-                <ScrollViewer Height="414" Width="613">
-                    <ItemsControl ItemsSource="{Binding Books}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Button Background="Coral"  Width="592" Height="100">
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                        <TextBlock VerticalAlignment="Center" FontSize="25" Margin="50 0" Text="{Binding Title}"></TextBlock>
-                                        <TextBlock VerticalAlignment="Center" FontSize="25" Margin="50 0" Text="{Binding Price, StringFormat='0.00 PLN'}"></TextBlock>
-                                    </StackPanel>
-                                </Button>
-                            </DataTemplate>
-                            <!--<Button Content="Button" HorizontalAlignment="Left" Margin="136,197,0,0" VerticalAlignment="Top"/>-->
-
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-
-                </ScrollViewer>
+            <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical" Width="290" Height="530">
+                    <Button Content="Horror" MinHeight="100" MinWidth="150" Margin="5 5" Command= "{Binding HorrorButtonClick}"/>
+                    <Button Content="Comedy" MinHeight="100" MinWidth="150" Margin="5 5" Command= "{Binding ComedyButtonClick}"/>
+                    <Button Content="Romance" MinHeight="100" MinWidth="150" Margin="5 5" Command= "{Binding RomanceButtonClick}"/>
+                    <Button Content="Criminal" MinHeight="100" MinWidth="150" Margin="5 5" Command= "{Binding CriminalButtonClick}"/>
+                    <Button Content="Fantasy" MinHeight="100" MinWidth="150" Margin="5 5" Command= "{Binding FantasyButtonClick}"/>
+                    <Button Content="Adventure" MinHeight="100" MinWidth="150" Margin="5 5" Command= "{Binding AdventureButtonClick}"/>
+                    <!--<Button Content="Koszyk" MinHeight="100" MinWidth="150" Margin="50 5" Command= "{Binding KoszykButtonClick}"/>-->
+                </StackPanel>
+                <StackPanel Width="556" >
+                    <ScrollViewer Height="414" Width="844">
+                        <ItemsControl ItemsSource="{Binding Books}" Width="828" Height="526">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Background="Coral"  Width="592" Height="100">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock VerticalAlignment="Center" FontSize="25" Margin="50 0" Text="{Binding Title}"/>
+                                            <TextBlock VerticalAlignment="Center" FontSize="25" Margin="50 0" Text="{Binding Price, StringFormat=0.00 PLN}"/>
+                                        </StackPanel>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </StackPanel>
             </StackPanel>
         </Canvas>
+
     </Grid>
 </Window>
