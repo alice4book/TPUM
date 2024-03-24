@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace Data
 {
-    public interface IDataLayer
+    public abstract class IDataLayer
     {
-        public IStorage Storage { get; set; }
-
-        public static IDataLayer Create(IStorage storage = default)
+        public static IDataLayer Create()
         {
-            return new DataLayer(storage);
+            return new DataLayer();
+
         }
+        public abstract IStorage Storage { get; set; }
+
     }
 }

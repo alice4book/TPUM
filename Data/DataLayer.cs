@@ -12,11 +12,6 @@ namespace Data
         {
             Storage = storage ?? new Storage(); 
         }                        
-        public IStorage Storage { get; set;}
-
-        public static DataLayer Create()
-        {
-            return new DataLayer();
-        }
+        public override IStorage Storage { get; set;}
     }
 }

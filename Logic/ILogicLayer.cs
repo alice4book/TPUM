@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Logic
 {
-    public interface ILogicLayer
+    public abstract class ILogicLayer
     {
         public IShop Shop { get; }
         public static ILogicLayer Create(IDataLayer data = default(IDataLayer))
