@@ -26,7 +26,7 @@
                         <ItemsControl ItemsSource="{Binding Books}" Width="828" Height="526">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Button Background="Coral"  Width="592" Height="100" Command="{Binding BookButtonClickHandler}" CommandParameter="{Binding Id}">
+                                    <Button Background="Coral"  Width="592" Height="100" Command="{Binding Path=DataContext.BookButtonClick, RelativeSource={RelativeSource AncestorType=ItemsControl}, Mode=Default}" CommandParameter="{Binding Id}">
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock VerticalAlignment="Center" FontSize="25" Margin="50 0" Text="{Binding Title}"/>
                                             <TextBlock VerticalAlignment="Center" FontSize="25" Margin="50 0" Text="{Binding Price, StringFormat=0.00 PLN}"/>
@@ -41,6 +41,11 @@
         </Canvas>
         <Canvas Background="Bisque" x:Name="ShoppingCartView" Visibility="{Binding CartViewVisibility}">
             <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal" Width="100" Height="100">
+                    <Button Content="Home Page" MinHeight="100" MinWidth="100" Command= "{Binding MainPageButtonClick}"/>
+                    <Button Content="Buy" MinHeight="100" MinWidth="100" FontSize="36" Margin="30" Command= "{Binding BuyButtonClick}"></Button>
+                    <!--<TextBlock VerticalAlignment="Center" FontSize="48" Margin="100 0" Text="{Binding ShoppingCartSum, StringFormat='0. PLN'}"></TextBlock>-->
+                </StackPanel>
                 <StackPanel Width="556" >
                     <ScrollViewer Height="414" Width="844">
                         <ItemsControl ItemsSource="{Binding CartPresentation.Books}" Width="828" Height="526">

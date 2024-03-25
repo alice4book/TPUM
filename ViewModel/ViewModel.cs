@@ -9,6 +9,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -42,8 +43,11 @@ namespace ViewModel
             FantasyButtonClick = new RelayCommand(FantasyButtonClickHandler);
             AdventureButtonClick = new RelayCommand(AdventureButtonClickHandler);
             CartButtonClick = new RelayCommand(CartButtonClickHandler);
+            MainPageButtonClick = new RelayCommand(MainPageButtonClickHandler);
+            BuyButtonClick = new RelayCommand(BuyButtonClickHandler);
 
-            //BookButtonClick = new RelayCommand(BookButtonClickHandler);
+            BookButtonClick = new ParameterCommand<Guid>(BookButtonClickHandler);
+
         }
 
         public ObservableCollection<BookPresentation> Books
@@ -69,11 +73,18 @@ namespace ViewModel
         public ICommand AdventureButtonClick { get; set; }
         public ICommand CartButtonClick { get; set; }
         public ICommand BookButtonClick { get; set; }
+        public ICommand MainPageButtonClick { get; set; }
+        public ICommand BuyButtonClick { get; set; }
 
         private void CartButtonClickHandler()
         {
             CartViewVisibility = "Visible";
             MainViewVisibility = "Hidden";
+        }
+        private void MainPageButtonClickHandler()
+        {
+            CartViewVisibility = "Hidden";
+            MainViewVisibility = "Visible";
         }
         private void HorrorButtonClickHandler()
         {
@@ -130,29 +141,29 @@ namespace ViewModel
             }
         }
 
-        private void BookButtonClickHandler(object parameter)
+        public void BookButtonClickHandler(Guid id)
         {
-            Debug.Assert(false);
-            /*
-            Button senderBtn = parameter as Button;
-            if (parameter != null)
+            foreach (BookPresentation book in this.model.StoragePresentation.GetBooks())
             {
-                string buttonText = senderBtn.CommandParameter.ToString();
-            }
-            if (parameter is Guid id)
-            {
-                foreach (BookPresentation book in this.model.StoragePresentation.GetBooks())
-                {
-                    if (book.Id.Equals(id))
+                if (book.Id.Equals(id))
                     {
-                        Debug.Assert(book.Title == "It");
-                        //cartPresentation.Add(book);
-                        //ShoppingCartSum = cartPresentation.Sum();
+                        cartPresentation.Add(book);
+                        //ShoppingCartSum = ShoppingCart.Sum();
                     }
-                }
-            }*/
-       
+            }
         }
+
+        public void BuyButtonClickHandler()
+        {
+            cartPresentation.Buy();
+            //ShoppingCartSum = ShoppingCart.Sum();
+            Books.Clear();
+            foreach (WeaponPresentation weapon in ModelLayer.WarehousePresentation.GetWeapons())
+            {
+                Weapons.Add(weapon);
+            }
+        }
+
         public CartPresentation CartPresentation
         {
             get
