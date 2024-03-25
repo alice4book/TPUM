@@ -23,6 +23,7 @@ namespace ViewModel
         private string b_mainViewVisibility;
         private string b_cartViewVisibility;
         private CartPresentation cartPresentation;
+        private float cartSum;
 
         public ViewModel()
         {
@@ -47,7 +48,6 @@ namespace ViewModel
             BuyButtonClick = new RelayCommand(BuyButtonClickHandler);
 
             BookButtonClick = new ParameterCommand<Guid>(BookButtonClickHandler);
-
         }
 
         public ObservableCollection<BookPresentation> Books
@@ -140,27 +140,34 @@ namespace ViewModel
                     books.Add(book);
             }
         }
-
         public void BookButtonClickHandler(Guid id)
         {
+            foreach (BookPresentation book in this.cartPresentation.Books)
+            {
+                if (book.Id.Equals(id))
+                {
+                    return;
+                }
+            }
             foreach (BookPresentation book in this.model.StoragePresentation.GetBooks())
             {
                 if (book.Id.Equals(id))
-                    {
-                        cartPresentation.Add(book);
-                        //ShoppingCartSum = ShoppingCart.Sum();
-                    }
+                {
+                    cartPresentation.Add(book);
+                    CartSum = cartPresentation.Sum();
+                }
             }
         }
 
         public void BuyButtonClickHandler()
         {
-            cartPresentation.Buy();
-            //ShoppingCartSum = ShoppingCart.Sum();
+            CartPresentation.Buy();
+            CartSum = cartPresentation.Sum();
+
             Books.Clear();
-            foreach (WeaponPresentation weapon in ModelLayer.WarehousePresentation.GetWeapons())
+            foreach (BookPresentation weapon in model.StoragePresentation.GetBooks())
             {
-                Weapons.Add(weapon);
+                Books.Add(weapon);
             }
         }
 
@@ -175,7 +182,7 @@ namespace ViewModel
                 if (value.Equals(cartPresentation))
                     return;
                 cartPresentation = value;
-                OnPropertyChanged("ShoppingCart");
+                OnPropertyChanged("CartPresentation");
             }
         }
         public string MainViewVisibility
@@ -192,7 +199,6 @@ namespace ViewModel
                 OnPropertyChanged("MainViewVisibility");
             }
         }
-
         public string CartViewVisibility
         {
             get
@@ -207,6 +213,21 @@ namespace ViewModel
                 OnPropertyChanged("CartViewVisibility");
             }
         }
+        public float CartSum
+        {
+            get
+            {
+                return cartSum;
+            }
+            set
+            {
+                if (value.Equals(cartSum))
+                    return;
+                cartSum = value;
+                OnPropertyChanged("CartSum");
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {

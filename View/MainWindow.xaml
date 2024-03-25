@@ -41,10 +41,10 @@
         </Canvas>
         <Canvas Background="Bisque" x:Name="ShoppingCartView" Visibility="{Binding CartViewVisibility}">
             <StackPanel Orientation="Horizontal">
-                <StackPanel Orientation="Horizontal" Width="100" Height="100">
+                <StackPanel Orientation="Vertical">
                     <Button Content="Home Page" MinHeight="100" MinWidth="100" Command= "{Binding MainPageButtonClick}"/>
-                    <Button Content="Buy" MinHeight="100" MinWidth="100" FontSize="36" Margin="30" Command= "{Binding BuyButtonClick}"></Button>
-                    <!--<TextBlock VerticalAlignment="Center" FontSize="48" Margin="100 0" Text="{Binding ShoppingCartSum, StringFormat='0. PLN'}"></TextBlock>-->
+                    <Button Content="Buy" MinHeight="100" MinWidth="100" Command= "{Binding BuyButtonClick}"/>
+                    <TextBlock VerticalAlignment="Center" FontSize="48" Text="{Binding CartSum, StringFormat='0.00 PLN'}"/>
                 </StackPanel>
                 <StackPanel Width="556" >
                     <ScrollViewer Height="414" Width="844">
