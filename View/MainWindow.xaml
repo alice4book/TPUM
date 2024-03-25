@@ -10,20 +10,40 @@
         <vm:ViewModel/>
     </Window.DataContext>
     <Grid>
-        <Canvas Background="Bisque">
+        <Canvas Background="Bisque" x:Name="MainView" Visibility="{Binding MainViewVisibility}">
             <StackPanel Orientation="Horizontal">
-                <StackPanel Orientation="Vertical" Width="290" Height="530">
-                    <Button Content="Horror" MinHeight="100" MinWidth="150" Margin="5 5" Command= "{Binding HorrorButtonClick}"/>
-                    <Button Content="Comedy" MinHeight="100" MinWidth="150" Margin="5 5" Command= "{Binding ComedyButtonClick}"/>
-                    <Button Content="Romance" MinHeight="100" MinWidth="150" Margin="5 5" Command= "{Binding RomanceButtonClick}"/>
-                    <Button Content="Criminal" MinHeight="100" MinWidth="150" Margin="5 5" Command= "{Binding CriminalButtonClick}"/>
-                    <Button Content="Fantasy" MinHeight="100" MinWidth="150" Margin="5 5" Command= "{Binding FantasyButtonClick}"/>
-                    <Button Content="Adventure" MinHeight="100" MinWidth="150" Margin="5 5" Command= "{Binding AdventureButtonClick}"/>
-                    <!--<Button Content="Koszyk" MinHeight="100" MinWidth="150" Margin="50 5" Command= "{Binding KoszykButtonClick}"/>-->
+                <StackPanel Orientation="Vertical" Width="290" Height="694">
+                    <Button Content="Horror" MinHeight="50" MinWidth="80" Margin="5 5" Command= "{Binding HorrorButtonClick}"/>
+                    <Button Content="Comedy" MinHeight="50" MinWidth="80" Margin="5 5" Command= "{Binding ComedyButtonClick}"/>
+                    <Button Content="Romance" MinHeight="50" MinWidth="80" Margin="5 5" Command= "{Binding RomanceButtonClick}"/>
+                    <Button Content="Criminal" MinHeight="50" MinWidth="80" Margin="5 5" Command= "{Binding CriminalButtonClick}"/>
+                    <Button Content="Fantasy" MinHeight="50" MinWidth="80" Margin="5 5" Command= "{Binding FantasyButtonClick}"/>
+                    <Button Content="Adventure" MinHeight="50" MinWidth="80" Margin="5 5" Command= "{Binding AdventureButtonClick}"/>
+                    <Button Content="Cart" MinHeight="50" MinWidth="80" Margin="50 5" Command= "{Binding CartButtonClick}"/>
                 </StackPanel>
                 <StackPanel Width="556" >
                     <ScrollViewer Height="414" Width="844">
                         <ItemsControl ItemsSource="{Binding Books}" Width="828" Height="526">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Background="Coral"  Width="592" Height="100" Command="{Binding BookButtonClickHandler}" CommandParameter="{Binding Id}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock VerticalAlignment="Center" FontSize="25" Margin="50 0" Text="{Binding Title}"/>
+                                            <TextBlock VerticalAlignment="Center" FontSize="25" Margin="50 0" Text="{Binding Price, StringFormat=0.00 PLN}"/>
+                                        </StackPanel>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </StackPanel>
+            </StackPanel>
+        </Canvas>
+        <Canvas Background="Bisque" x:Name="ShoppingCartView" Visibility="{Binding CartViewVisibility}">
+            <StackPanel Orientation="Horizontal">
+                <StackPanel Width="556" >
+                    <ScrollViewer Height="414" Width="844">
+                        <ItemsControl ItemsSource="{Binding CartPresentation.Books}" Width="828" Height="526">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Button Background="Coral"  Width="592" Height="100">

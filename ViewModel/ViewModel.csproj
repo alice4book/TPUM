@@ -10,4 +10,8 @@
     <ProjectReference Include="..\Model\Model.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+
 </Project>
