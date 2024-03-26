@@ -12,7 +12,7 @@ namespace Data
         string Title { get; }
         string Description { get; }
         string Author { get; }
-        float Price { get; }
+        float Price { get; set; }
         BookType Type { get; }
         Guid Id { get; }
     }

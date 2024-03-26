@@ -8,6 +8,7 @@ namespace Data
 {
     internal class Storage : IStorage
     {
+        public event EventHandler<PriceChangeEventArgs> PriceChange;
         public List<IBook> Stock { get; }
         public Storage()
         {
@@ -38,6 +39,22 @@ namespace Data
             return Stock.FindAll(book => book.Title == title);
         }
 
+        public void ChangePrice(Guid id, float newPrice)
+        {
+            IBook book = Stock.Find(x => x.Id.Equals(id));
+            if (book == null)
+                return;
+            if(Math.Abs(newPrice = book.Price) < 0.01f)
+                return;
+            book.Price = newPrice;
+            OnPriceChanged(book.Id, book.Price);
+        }
+
+        private void OnPriceChanged(Guid id, float price)
+        {
+            EventHandler<PriceChangeEventArgs> handler = PriceChange;
+            handler?.Invoke(this, new PriceChangeEventArgs(id, price));
+        }
         public List<IBook> GetBooksById(List<Guid> Ids)
         {
             List<IBook> books = new List<IBook>();  
