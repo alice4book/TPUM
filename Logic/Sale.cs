@@ -1,6 +1,7 @@
 ﻿using Data;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Timers;
 
@@ -11,6 +12,8 @@ namespace Logic
         private Guid BookId {  get; set; }
         private System.Timers.Timer DiscountTimer { get;}
         private float Discount { get; set; }
+
+        private bool onSale = false;
         private IStorage Storage { get; set; }
         private Random Rand { get; set; }
 
@@ -29,10 +32,20 @@ namespace Logic
         }
         private void GetNewSale(Object source, ElapsedEventArgs e)
         {
-            Discount = ((float)Rand.NextDouble() * 0.5f) + 0.7f;
-            IBook book = Storage.Stock[Rand.Next(0, Storage.Stock.Count)];
+            IBook book;
+            if (onSale)
+            {
+                List<Guid> list = new List<Guid>();
+                list.Add(BookId);
+                book = Storage.GetBooksById(list)[0];
+                book.Price = book.Price / Discount;
+                onSale = false;
+            }
+            Discount = ((float)Rand.NextDouble() * 0.5f) + 0.5f;
+            book = Storage.Stock[Rand.Next(0, Storage.Stock.Count)];
             BookId = book.Id;
             Storage.ChangePrice(BookId, book.Price * Discount);
+            onSale = true;
         }
     }
 }
