@@ -8,6 +8,7 @@ namespace Data
 {
     public interface IStorage
     {
+        public event EventHandler<PriceChangeEventArgs> PriceChange;
         public List<IBook> Stock { get; }
         public void RemoveBooks(List<IBook> books);
         public List<IBook> GetBooksOfType(BookType type);

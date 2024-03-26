@@ -11,19 +11,32 @@ namespace Logic
 {
     public class Shop : IShop
     {
+        public event EventHandler<PriceChangeEventArgs> PriceChanged;
+
         private IStorage storage;
 
+        private ISale Sale;
         public Shop(IStorage storage) 
         {
             this.storage = storage;
+            Sale = new Sale(storage);
+            storage.PriceChange += OnPriceChanged;
         }
 
-        public List<BookDTO> GetBooks()
+        public List<BookDTO> GetBooks(bool onSale = true)
         {
+            Tuple<Guid, float> sale = new Tuple<Guid, float>(Guid.Empty, 1f);
+            if (onSale)
+                sale = Sale.GetSpecialOffer();
+
             List<BookDTO> availableBooks = new List<BookDTO>();
             
             foreach(IBook book in storage.Stock)
             {
+                float price = book.Price;
+                if (book.Id.Equals(sale.Item1))
+                    price *= sale.Item2;
+
                 availableBooks.Add(new BookDTO 
                 { 
                     Title = book.Title,
@@ -47,5 +60,11 @@ namespace Logic
             storage.RemoveBooks(booksDataLayer);
             return true;
         }
+        private void OnPriceChanged(object sender, Data.PriceChangeEventArgs e)
+        {
+            EventHandler<PriceChangeEventArgs> handler = PriceChanged;
+            handler?.Invoke(this, new Logic.PriceChangeEventArgs(e.Id, e.Price));
+        }
+
     }
 }

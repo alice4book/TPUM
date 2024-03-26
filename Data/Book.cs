@@ -14,14 +14,17 @@ namespace Data
         public string Author { get; }
         public float Price
         { 
-           get => Price;
+           get => price;
             set 
             {
-                if (value == Price)
+                if (value == price)
                     return;
-                Price = value;
+
+                price = value;
+                
             }
         }
+        private float price;
         public BookType Type { get; }
 
         public Book(string title, string description, string author, float price, BookType type)

@@ -44,7 +44,7 @@ namespace Data
             IBook book = Stock.Find(x => x.Id.Equals(id));
             if (book == null)
                 return;
-            if(Math.Abs(newPrice = book.Price) < 0.01f)
+            if(Math.Abs(newPrice - book.Price) < 0.01f)
                 return;
             book.Price = newPrice;
             OnPriceChanged(book.Id, book.Price);
