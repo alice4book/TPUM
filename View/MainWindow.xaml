@@ -11,7 +11,7 @@
     </Window.DataContext>
     <Grid>
         <Canvas Background="Bisque" x:Name="MainView" Visibility="{Binding MainViewVisibility}">
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" >
                 <StackPanel Orientation="Vertical" Width="290" Height="694">
                     <Button Content="Horror" MinHeight="50" MinWidth="80" Margin="5 5" Command= "{Binding HorrorButtonClick}"/>
                     <Button Content="Comedy" MinHeight="50" MinWidth="80" Margin="5 5" Command= "{Binding ComedyButtonClick}"/>

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Timers;
 
 namespace Logic
@@ -10,7 +11,6 @@ namespace Logic
     internal class Sale : ISale
     {
         private Guid BookId {  get; set; }
-        private System.Timers.Timer DiscountTimer { get;}
         private float Discount { get; set; }
 
         private bool onSale = false;
@@ -19,33 +19,34 @@ namespace Logic
 
         public Sale(IStorage storage) 
         {
-            DiscountTimer = new System.Timers.Timer(5000);
-            DiscountTimer.Elapsed += GetNewSale;
-            DiscountTimer.AutoReset = true;
-            DiscountTimer.Enabled = true;
             Storage = storage;
             Rand = new Random();
+            GetNewSale();
         }
         public Tuple<Guid, float> GetSpecialOffer()
         {
             return new Tuple<Guid, float>(BookId, Discount);
         }
-        private void GetNewSale(Object source, ElapsedEventArgs e)
+        private async void GetNewSale()
         {
-            IBook book;
-            if (onSale)
-            {
-                List<Guid> list = new List<Guid>();
-                list.Add(BookId);
-                book = Storage.GetBooksById(list)[0];
-                book.Price = book.Price / Discount;
-                onSale = false;
-            }
-            Discount = ((float)Rand.NextDouble() * 0.5f) + 0.5f;
-            book = Storage.Stock[Rand.Next(0, Storage.Stock.Count)];
-            BookId = book.Id;
-            Storage.ChangePrice(BookId, book.Price * Discount);
-            onSale = true;
+            while (true) {
+                IBook book;
+                float waitSeconds = 5f;
+                await Task.Delay((int)Math.Truncate(waitSeconds * 1000f));
+                if (onSale)
+                {
+                    List<Guid> list = new List<Guid>();
+                    list.Add(BookId);
+                    book = Storage.GetBooksById(list)[0];
+                    book.Price = book.Price / Discount;
+                    onSale = false;
+                }
+                Discount = ((float)Rand.NextDouble() * 0.5f) + 0.5f;
+                book = Storage.Stock[Rand.Next(0, Storage.Stock.Count)];
+                BookId = book.Id;
+                Storage.ChangePrice(BookId, book.Price * Discount);
+                onSale = true; 
+               }
         }
     }
 }

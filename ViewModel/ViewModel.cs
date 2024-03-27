@@ -225,8 +225,7 @@ namespace ViewModel
             books.Clear();
             foreach (BookPresentation book in this.model.StoragePresentation.GetBooks())
             {
-                if (book.Id.Equals(id))
-                    books.Add(book);
+                books.Add(book);
             }
         }
 
