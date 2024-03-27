@@ -1,16 +1,8 @@
-﻿using Data;
-using Model;
+﻿using Model;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace ViewModel
@@ -28,6 +20,7 @@ namespace ViewModel
         public ViewModel()
         {
             this.model = new Model.Model(null);
+            this.model.PriceChanged += HandlePriceChanged;
             this.books = new ObservableCollection<BookPresentation>();
             MainViewVisibility = this.model.MainViewVisibility;
             CartViewVisibility = this.model.CartViewVisibility;
@@ -158,7 +151,6 @@ namespace ViewModel
                 }
             }
         }
-
         public void BuyButtonClickHandler()
         {
             CartPresentation.Buy();
@@ -226,6 +218,21 @@ namespace ViewModel
                 cartSum = value;
                 OnPropertyChanged("CartSum");
             }
+        }
+
+        public void RefreshBooks(Guid id)
+        {
+            books.Clear();
+            foreach (BookPresentation book in this.model.StoragePresentation.GetBooks())
+            {
+                if (book.Id.Equals(id))
+                    books.Add(book);
+            }
+        }
+
+        public void HandlePriceChanged(object sender, Model.PriceChangeEventArgs args)
+        {
+            RefreshBooks(args.Id);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

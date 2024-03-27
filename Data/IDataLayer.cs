@@ -13,7 +13,7 @@ namespace Data
             return new DataLayer();
 
         }
-        public abstract IStorage Storage { get; set; }
+        public abstract IStorage Storage { get; }
 
     }
 }

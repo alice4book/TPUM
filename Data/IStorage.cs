@@ -16,6 +16,7 @@ namespace Data
         public List<IBook> GetBooksByTitle(string title);
         public List<IBook> GetBooksById(List<Guid> Ids);
         public void ChangePrice(Guid id, float newPrice);
+        public IBook CreateBook(string title, string description, string author, float price, BookType type);
 
         }
 }

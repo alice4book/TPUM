@@ -16,6 +16,8 @@ namespace Model
         public string CartViewVisibility;
         public CartPresentation CartPresentation;
 
+        public event EventHandler<PriceChangeEventArgs>? PriceChanged;
+
         public StoragePresentation StoragePresentation { get; private set; }
         public Model(ILogicLayer? iLogicLayer) 
         {
@@ -24,8 +26,13 @@ namespace Model
             CartPresentation = new CartPresentation(new ObservableCollection<BookPresentation>(), this.iLogicLayer.Shop);
             MainViewVisibility = "Visiblie";
             CartViewVisibility = "Hidden";
+            this.iLogicLayer.Shop.PriceChanged += OnPriceChanged;
 
         }
 
+        public void OnPriceChanged(object sender, Logic.PriceChangeEventArgs e)
+        {
+            PriceChanged?.Invoke(this, new PriceChangeEventArgs(e.Id, e.Price));
+        }
     }
 }

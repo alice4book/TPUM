@@ -14,10 +14,15 @@ namespace Data
         {
             Stock = new List<IBook>();
 
-            Stock.Add(new Book("It", "Clown scary!", "Stephen King", 59.99f, BookType.Horror));
-            Stock.Add(new Book("This", "Clown scary!", "Stephen King", 19.99f, BookType.Romance));
-            Stock.Add(new Book("That", "Clown scary!", "Stephen King", 29.99f, BookType.Horror));
-          }
+            Stock.Add(CreateBook("It", "Clown scary!", "Stephen King", 59.99f, BookType.Horror));
+            Stock.Add(CreateBook("This", "Clown scary!", "Stephen King", 19.99f, BookType.Romance));
+            Stock.Add(CreateBook("That", "Clown scary!", "Stephen King", 29.99f, BookType.Horror));
+        }
+
+        public IBook CreateBook(string title, string description, string author, float price, BookType type)
+        {
+            return new Book(title, description, author, price, type);
+        }
 
         public void RemoveBooks(List<IBook> books)
         {

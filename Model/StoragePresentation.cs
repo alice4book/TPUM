@@ -11,7 +11,6 @@ namespace Model
 {
     public class StoragePresentation
     {
-        public event EventHandler<PriceChangeEventArgs> PriceChange;
         private IShop Shop{get; set;}
 
         public StoragePresentation(IShop shop)
@@ -19,11 +18,6 @@ namespace Model
             Shop = shop;
         }
 
-        private void OnPriceChanged(object sender, Logic.PriceChangeEventArgs e)
-        {
-            EventHandler<PriceChangeEventArgs> handler = PriceChange;
-            handler?.Invoke(this, new PriceChangeEventArgs(e.Id, e.Price));
-        }
 
         public List<BookPresentation> GetBooks()
         {

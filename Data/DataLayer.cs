@@ -12,6 +12,6 @@ namespace Data
         {
             Storage = storage ?? new Storage(); 
         }                        
-        public override IStorage Storage { get; set;}
+        public override IStorage Storage { get; }
     }
 }
