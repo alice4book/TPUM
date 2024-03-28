@@ -9,7 +9,7 @@ using Data;
 
 namespace Logic
 {
-    public class Shop : IShop
+    internal class Shop : IShop
     {
         public event EventHandler<PriceChangeEventArgs> PriceChanged;
 

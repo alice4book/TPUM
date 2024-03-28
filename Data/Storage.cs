@@ -9,6 +9,7 @@ namespace Data
     internal class Storage : IStorage
     {
         public event EventHandler<PriceChangeEventArgs> PriceChange;
+        private readonly object bookLock = new object();
         public List<IBook> Stock { get; }
         public Storage()
         {
@@ -21,38 +22,55 @@ namespace Data
 
         public IBook CreateBook(string title, string description, string author, float price, BookType type)
         {
-            return new Book(title, description, author, price, type);
+            lock(bookLock) {
+                return new Book(title, description, author, price, type); 
+            }
         }
 
         public void RemoveBooks(List<IBook> books)
         {
-            books.ForEach(book => Stock.Remove(book));
+            lock (bookLock)
+            {
+                books.ForEach(book => Stock.Remove(book));
+            }
         }
 
         public List<IBook> GetBooksOfType(BookType type) 
-        { 
-            return Stock.FindAll(book => book.Type == type);
+        {
+            lock (bookLock)
+            {
+                return Stock.FindAll(book => book.Type == type);
+            }
         }
 
         public List<IBook> GetBooksByAuthor(string author)
         {
-            return Stock.FindAll(book => book.Author == author);
+            lock (bookLock)
+            {
+                return Stock.FindAll(book => book.Author == author);
+            }
         }
 
         public List<IBook> GetBooksByTitle(string title)
         {
-            return Stock.FindAll(book => book.Title == title);
+            lock (bookLock)
+            {
+                return Stock.FindAll(book => book.Title == title);
+            }
         }
 
         public void ChangePrice(Guid id, float newPrice)
         {
-            IBook book = Stock.Find(x => x.Id.Equals(id));
-            if (book == null)
-                return;
-            if(Math.Abs(newPrice - book.Price) < 0.01f)
-                return;
-            book.Price = newPrice;
-            OnPriceChanged(book.Id, book.Price);
+            lock (bookLock)
+            {
+                IBook book = Stock.Find(x => x.Id.Equals(id));
+                if (book == null)
+                    return;
+                if (Math.Abs(newPrice - book.Price) < 0.01f)
+                    return;
+                book.Price = newPrice;
+                OnPriceChanged(book.Id, book.Price);
+            }
         }
 
         private void OnPriceChanged(Guid id, float price)
@@ -62,12 +80,15 @@ namespace Data
         }
         public List<IBook> GetBooksById(List<Guid> Ids)
         {
-            List<IBook> books = new List<IBook>();  
-            foreach (Guid id in Ids) 
+            List<IBook> books = new List<IBook>();
+            lock (bookLock)
             {
-                List<IBook> tmp = Stock.FindAll(x => x.Id == id);
-                if (tmp.Count > 0)
-                    books.AddRange(tmp);
+                foreach (Guid id in Ids)
+                {
+                    List<IBook> tmp = Stock.FindAll(x => x.Id == id);
+                    if (tmp.Count > 0)
+                        books.AddRange(tmp);
+                }
             }
             return books;
         }

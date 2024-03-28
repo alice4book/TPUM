@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Logic
 {
-    public class LogicLayer : ILogicLayer
+    internal class LogicLayer : ILogicLayer
     {
         public override IShop Shop { get; }
         private IDataLayer Data { get; }
