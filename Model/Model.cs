@@ -24,7 +24,7 @@ namespace Model
             this.iLogicLayer = iLogicLayer == null ? ILogicLayer.Create() : iLogicLayer;
             StoragePresentation = new StoragePresentation(this.iLogicLayer.Shop);
             CartPresentation = new CartPresentation(new ObservableCollection<BookPresentation>(), this.iLogicLayer.Shop);
-            MainViewVisibility = "Visiblie";
+            MainViewVisibility = "Visible";
             CartViewVisibility = "Hidden";
             this.iLogicLayer.Shop.PriceChanged += OnPriceChanged;
 

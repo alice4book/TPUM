@@ -33,20 +33,22 @@ namespace Logic
                 IBook book;
                 float waitSeconds = 5f;
                 await Task.Delay((int)Math.Truncate(waitSeconds * 1000f));
-                if (onSale)
+                List<Guid> list = new List<Guid>();
+                list.Add(BookId);
+                if (onSale && Storage.GetBooksById(list).Count > 0)
                 {
-                    List<Guid> list = new List<Guid>();
-                    list.Add(BookId);
                     book = Storage.GetBooksById(list)[0];
                     book.Price = book.Price / Discount;
                     onSale = false;
                 }
-                Discount = ((float)Rand.NextDouble() * 0.5f) + 0.5f;
-                book = Storage.Stock[Rand.Next(0, Storage.Stock.Count)];
-                BookId = book.Id;
-                Storage.ChangePrice(BookId, book.Price * Discount);
-                onSale = true; 
-               }
+                if(Storage.Stock.Count > 0) {
+                    Discount = ((float)Rand.NextDouble() * 0.5f) + 0.5f;
+                    book = Storage.Stock[Rand.Next(0, Storage.Stock.Count)];
+                    BookId = book.Id;
+                    Storage.ChangePrice(BookId, book.Price * Discount);
+                    onSale = true;  
+                }
+            }
         }
     }
 }
