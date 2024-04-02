@@ -157,9 +157,9 @@ namespace ViewModel
             CartSum = cartPresentation.Sum();
 
             Books.Clear();
-            foreach (BookPresentation weapon in model.StoragePresentation.GetBooks())
+            foreach (BookPresentation book in model.StoragePresentation.GetBooks())
             {
-                Books.Add(weapon);
+                Books.Add(book);
             }
         }
 
