@@ -11,7 +11,6 @@ namespace LogicTest
         {
             get { return storage; }
         }
-
        
     }
 
@@ -51,8 +50,8 @@ namespace LogicTest
         {
             Stock = new List<IBook>
             {
-                new Book("It", "Clown scary!", "Stephen King", 59.99f, BookType.Horror),
-                new Book("This", "Clown scary!", "Stephen King", 19.99f, BookType.Romance)
+                new MockBook("It", "Clown scary!", "Stephen King", 59.99f, BookType.Horror),
+                new MockBook("This", "Clown scary!", "Stephen King", 19.99f, BookType.Romance)
             };
         }
 
@@ -70,7 +69,7 @@ namespace LogicTest
 
         public IBook CreateBook(string title, string description, string author, float price, BookType type)
         {
-            return new Book(title, description, author, price, type);
+            return new MockBook(title, description, author, price, type);
         }
 
         public List<IBook> GetBooksByAuthor(string author)
@@ -103,6 +102,38 @@ namespace LogicTest
         public void RemoveBooks(List<IBook> books)
         {
             books.ForEach(book => Stock.Remove(book));
+        }
+    }
+
+    public class MockBook : IBook
+    {
+        public Guid Id { get; }
+        public string Title { get; }
+        public string Description { get; }
+        public string Author { get; }
+        public float Price
+        {
+            get => price;
+            set
+            {
+                if (value == price)
+                    return;
+
+                price = value;
+
+            }
+        }
+        private float price;
+        public BookType Type { get; }
+
+        public MockBook(string title, string description, string author, float price, BookType type)
+        {
+            Title = title;
+            Description = description;
+            Author = author;
+            Price = price;
+            Id = Guid.NewGuid();
+            Type = type;
         }
     }
 }
