@@ -11,7 +11,7 @@ namespace ViewModel
     {
 
         private Model.Model model;
-        private ObservableCollection<BookPresentation> books;
+        private ObservableCollection<ViewModelBook> books;
         private string b_mainViewVisibility;
         private string b_cartViewVisibility;
         private CartPresentation cartPresentation;
@@ -21,13 +21,13 @@ namespace ViewModel
         {
             this.model = new Model.Model(null);
             this.model.PriceChanged += HandlePriceChanged;
-            this.books = new ObservableCollection<BookPresentation>();
+            this.books = new ObservableCollection<ViewModelBook>();
             MainViewVisibility = this.model.MainViewVisibility;
             CartViewVisibility = this.model.CartViewVisibility;
             cartPresentation = this.model.CartPresentation;
             foreach (BookPresentation book in this.model.StoragePresentation.GetBooks())
             {
-                books.Add(book);
+                books.Add(new ViewModelBook (book));
             }
 
             HorrorButtonClick = new RelayCommand(HorrorButtonClickHandler);
@@ -43,7 +43,7 @@ namespace ViewModel
             BookButtonClick = new ParameterCommand<Guid>(BookButtonClickHandler);
         }
 
-        public ObservableCollection<BookPresentation> Books
+        public ObservableCollection<ViewModelBook> Books
         {
             get
             {
@@ -85,7 +85,7 @@ namespace ViewModel
             foreach (BookPresentation book in this.model.StoragePresentation.GetBooks())
             {
                 if (book.Type.Equals("Horror"))
-                    books.Add(book);
+                    books.Add(new ViewModelBook(book));
             }
         }
         private void ComedyButtonClickHandler()
@@ -94,7 +94,7 @@ namespace ViewModel
             foreach (BookPresentation book in this.model.StoragePresentation.GetBooks())
             {
                 if (book.Type.Equals("Comedy"))
-                    books.Add(book);
+                    books.Add(new ViewModelBook(book));
             }
         }
         private void CriminalButtonClickHandler()
@@ -103,7 +103,7 @@ namespace ViewModel
             foreach (BookPresentation book in this.model.StoragePresentation.GetBooks())
             {
                 if (book.Type.Equals("Criminal"))
-                    books.Add(book);
+                    books.Add(new ViewModelBook(book));
             }
         }
         private void RomanceButtonClickHandler()
@@ -112,7 +112,7 @@ namespace ViewModel
             foreach (BookPresentation book in this.model.StoragePresentation.GetBooks())
             {
                 if (book.Type.Equals("Romance"))
-                    books.Add(book);
+                    books.Add(new ViewModelBook(book));
             }
         }
         private void FantasyButtonClickHandler()
@@ -121,7 +121,7 @@ namespace ViewModel
             foreach (BookPresentation book in this.model.StoragePresentation.GetBooks())
             {
                 if (book.Type.Equals("Fantasy"))
-                    books.Add(book);
+                    books.Add(new ViewModelBook(book));
             }
         }
         private void AdventureButtonClickHandler()
@@ -130,7 +130,7 @@ namespace ViewModel
             foreach (BookPresentation book in this.model.StoragePresentation.GetBooks())
             {
                 if (book.Type.Equals("Adventure"))
-                    books.Add(book);
+                    books.Add(new ViewModelBook(book));
             }
         }
         public void BookButtonClickHandler(Guid id)
@@ -159,7 +159,7 @@ namespace ViewModel
             Books.Clear();
             foreach (BookPresentation book in model.StoragePresentation.GetBooks())
             {
-                Books.Add(book);
+                books.Add(new ViewModelBook(book));
             }
         }
 
@@ -205,6 +205,7 @@ namespace ViewModel
                 OnPropertyChanged("CartViewVisibility");
             }
         }
+
         public float CartSum
         {
             get
@@ -225,7 +226,7 @@ namespace ViewModel
             books.Clear();
             foreach (BookPresentation book in this.model.StoragePresentation.GetBooks())
             {
-                books.Add(book);
+                books.Add(new ViewModelBook(book));
             }
         }
 
