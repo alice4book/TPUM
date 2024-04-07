@@ -17,6 +17,10 @@ namespace Data
         public Storage()
         {
             Stock = new List<IBook>();
+
+            Stock.Add(CreateBook("It", "Clown scary!", "Stephen King", 59.99f, BookType.Horror));
+            Stock.Add(CreateBook("This", "Clown scary!", "Stephen King", 19.99f, BookType.Romance));
+            Stock.Add(CreateBook("That", "Clown scary!", "Stephen King", 29.99f, BookType.Horror));
         }
 
         public IBook CreateBook(string title, string description, string author, float price, BookType type)

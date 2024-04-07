@@ -36,5 +36,15 @@ namespace Data
             Id = Guid.NewGuid();
             Type = type;
         }
+
+        public Book(Guid id, string title, string description, string author, float price, BookType type)
+        {
+            Title = title;
+            Description = description;
+            Author = author;
+            Price = price;
+            Id = id;
+            Type = type;
+        }
     }
 }

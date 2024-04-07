@@ -1,28 +1,35 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Text.Json;
+using System.Xml.Serialization;
 
 namespace Data
 {
     public abstract class Serializer
     {
-        public static string BookToJSON(IBook book)
+        public static string SerializeBook(IBook book)
         {
-            return JsonSerializer.Serialize(book);
+            XmlSerializer serializer = new XmlSerializer(typeof(IBook));
+            using (StringWriter writer = new StringWriter())
+            {
+                serializer.Serialize(writer, book);
+                return writer.ToString();
+            }
         }
 
-        public static IBook JSONToBook(string json)
+        public static IBook DeserializeBook(string book)
         {
-            return JsonSerializer.Deserialize<Book>(json);
-        }
+            XmlSerializer serializer = new XmlSerializer(typeof(IBook));
+            using (StringReader reader = new StringReader(book))
+            {
+                IBook ibook = serializer.Deserialize(reader) as IBook;
+                if (ibook == null)
+                {
+                    return null;
+                }
 
-        public static string StorageToJSON(List<IBook> books)
-        {
-            return JsonSerializer.Serialize(books);
-        }
-
-        public static List<IBook> JSONToStorage(string json)
-        {
-            return new List<IBook>(JsonSerializer.Deserialize<List<Book>>(json)!);
+                return new Book(ibook.Id,ibook.Title, ibook.Description, ibook.Author, ibook.Price, ibook.Type);
+            }
         }
     }
 }

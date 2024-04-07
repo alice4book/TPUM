@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Data
 {
@@ -30,6 +34,16 @@ namespace Data
             Author = author;
             Price = price;
             Id = Guid.NewGuid();
+            Type = type;
+        }
+
+        public Book(Guid id, string title, string description, string author, float price, BookType type)
+        {
+            Title = title;
+            Description = description;
+            Author = author;
+            Price = price;
+            Id = id;
             Type = type;
         }
     }
