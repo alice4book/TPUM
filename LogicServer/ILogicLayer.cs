@@ -17,5 +17,9 @@ namespace LogicServer
         {
             return new LogicLayer(data ?? IDataLayer.Create());
         }
+        public static ILogicLayer CreateDefault()
+        {
+            return new LogicLayer(IDataLayer.Create());
+        }
     }
 }

@@ -1,4 +1,4 @@
-using DataServer;
+using Data;
 using Logic;
 
 namespace LogicTest

@@ -11,13 +11,18 @@ namespace ServerPresention
     {
         private ILogicLayer _logicLayer;
         private WebSocketConnection _connection;
-    
+        
 
         public PresentationLayer(ILogicLayer logicLayer)
         {
             _logicLayer = logicLayer;
 
             _logicLayer.onBookRemoved += HandleBookRemoved;
+        }
+
+        public static IPresentationLayer CreateDefault()
+        {
+            return new PresentationLayer(ILogicLayer.CreateDefault());
         }
         public async Task RunServer(int port)
         {

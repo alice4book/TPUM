@@ -1,4 +1,4 @@
-using DataServer;
+using Data;
 using System.Diagnostics;
 
 namespace DataTest
