@@ -18,10 +18,7 @@ namespace Data
         public List<IBook> GetBooksById(List<Guid> Ids);
         public void ChangePrice(Guid id, float newPrice);
         public IBook CreateBook(string title, string description, string author, float price, BookType type);
-
-        //public Task SendAsync(string mesg);
-        //public Task RequestBooksUpdate();
-        //Task TryBuying(List<IBook> books);
+        public event Action<List<IBook>> onBookRemoved;
 
     }
 }
