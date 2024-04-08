@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Logic
+namespace LogicServer
 {
     public interface ISale
     {

@@ -5,9 +5,9 @@ using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Data;
+using DataServer;
 
-namespace Logic
+namespace LogicServer
 {
     internal class Shop : IShop
     {
@@ -60,10 +60,10 @@ namespace Logic
             storage.RemoveBooks(booksDataLayer);
             return true;
         }
-        private void OnPriceChanged(object sender, Data.PriceChangeEventArgs e)
+        private void OnPriceChanged(object sender, DataServer.PriceChangeEventArgs e)
         {
             EventHandler<PriceChangeEventArgs> handler = PriceChanged;
-            handler?.Invoke(this, new Logic.PriceChangeEventArgs(e.Id, e.Price));
+            handler?.Invoke(this, new LogicServer.PriceChangeEventArgs(e.Id, e.Price));
         }
 
     }

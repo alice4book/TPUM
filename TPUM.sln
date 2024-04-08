@@ -26,7 +26,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Prezentacja", "Prezentacja"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataServer", "DataServer\DataServer.csproj", "{E7AA1146-359C-4A0F-98E1-66C9ED42CA92}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicServer", "LogicServer\LogicServer.csproj", "{8970F3D0-B617-44CB-A2FC-D7CDDC856874}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogicServer", "LogicServer\LogicServer.csproj", "{8970F3D0-B617-44CB-A2FC-D7CDDC856874}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerPresentation", "WpfApp1\ServerPresentation.csproj", "{1C410282-D22C-40BF-AE86-A92C7D9F4EAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -70,6 +72,10 @@ Global
 		{8970F3D0-B617-44CB-A2FC-D7CDDC856874}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8970F3D0-B617-44CB-A2FC-D7CDDC856874}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8970F3D0-B617-44CB-A2FC-D7CDDC856874}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C410282-D22C-40BF-AE86-A92C7D9F4EAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C410282-D22C-40BF-AE86-A92C7D9F4EAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C410282-D22C-40BF-AE86-A92C7D9F4EAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C410282-D22C-40BF-AE86-A92C7D9F4EAC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

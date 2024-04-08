@@ -1,4 +1,4 @@
-﻿using Data;
+﻿using DataServer;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Logic
+namespace LogicServer
 {
     internal class LogicLayer : ILogicLayer
     {
