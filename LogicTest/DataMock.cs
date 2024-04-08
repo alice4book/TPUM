@@ -10,8 +10,23 @@ namespace LogicTest
         public override IStorage Storage
         {
             get { return storage; }
+            set { throw new NotImplementedException(); }
         }
-       
+
+        public override Task Connect(Uri uri)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void ConnectionMessageHandler(string message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Task SendMessage(string message)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class BookMock : IBook
@@ -45,6 +60,7 @@ namespace LogicTest
         public List<IBook> Stock { get; }
 
         public event EventHandler<PriceChangeEventArgs> PriceChange;
+        public event Action<List<IBook>> onBookRemoved;
 
         public StorageMock()
         {
@@ -102,6 +118,11 @@ namespace LogicTest
         public void RemoveBooks(List<IBook> books)
         {
             books.ForEach(book => Stock.Remove(book));
+        }
+
+        public void AddBook(IBook books)
+        {
+            throw new NotImplementedException();
         }
     }
 

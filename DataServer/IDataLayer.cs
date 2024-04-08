@@ -15,5 +15,7 @@ namespace Data
         }
         public abstract IStorage Storage { get; set; }
 
+        public event Action<string> onConnectionMessage;
+
     }
 }

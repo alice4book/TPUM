@@ -13,24 +13,13 @@ namespace Logic
         public override IShop Shop { get; }
         private IDataLayer Data { get; }
         public event Action<List<BookDTO>> onBookRemoved;
-        public event Action<string> onConnectionMessage;
         public LogicLayer(IDataLayer data)
         {
             Data = data;
             Shop = new Shop(Data.Storage);
-            data.onConnectionMessage += ConnectionMessageHandler;
             data.Storage.onBookRemoved += HandleBookRemoved;
         }
 
-        void ConnectionMessageHandler(string message)
-        {
-            onConnectionMessage?.Invoke(message);
-        }
-
-        public async Task Connect(Uri uri)
-        {
-            Data.Connect(uri);
-        }
         void HandleBookRemoved(List<IBook> books)
         {
             onBookRemoved?.Invoke(ToBookDTO(books));
