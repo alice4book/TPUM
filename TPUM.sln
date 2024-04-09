@@ -28,7 +28,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataServer", "DataServer\Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogicServer", "LogicServer\LogicServer.csproj", "{8970F3D0-B617-44CB-A2FC-D7CDDC856874}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerPresentation", "WpfApp1\ServerPresentation.csproj", "{1C410282-D22C-40BF-AE86-A92C7D9F4EAC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerPresentation", "ServerPresention\ServerPresentation.csproj", "{1C410282-D22C-40BF-AE86-A92C7D9F4EAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
