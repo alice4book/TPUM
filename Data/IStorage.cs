@@ -12,6 +12,7 @@ namespace Data
         public List<IBook> Stock { get; }
         public void RemoveBooks(List<IBook> books);
         public void AddBook(IBook books);
+        public void RemoveAll();
         public List<IBook> GetBooksOfType(BookType type);
         public List<IBook> GetBooksByAuthor(string author);
         public List<IBook> GetBooksByTitle(string title);
@@ -19,6 +20,7 @@ namespace Data
         public void ChangePrice(Guid id, float newPrice);
         public IBook CreateBook(string title, string description, string author, float price, BookType type);
         public event Action<List<IBook>> onBookRemoved;
+        public event Action<IBook> onBookAdded;
 
     }
 }

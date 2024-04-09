@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Text.Json;
 using System.Xml.Serialization;
+using BookInfo;
 
 namespace Data
 {
     public abstract class Serializer
     {
-        public static string SerializeBook(IBook book)
+        public static string SerializeBook(BookInfo.BookInfo book)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(IBook));
+            XmlSerializer serializer = new XmlSerializer(typeof(BookInfo.BookInfo));
             using (StringWriter writer = new StringWriter())
             {
                 serializer.Serialize(writer, book);
@@ -19,16 +19,16 @@ namespace Data
 
         public static IBook DeserializeBook(string book)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(IBook));
+            XmlSerializer serializer = new XmlSerializer(typeof(BookInfo.BookInfo));
             using (StringReader reader = new StringReader(book))
             {
-                IBook ibook = serializer.Deserialize(reader) as IBook;
+                BookInfo.BookInfo ibook = serializer.Deserialize(reader) as BookInfo.BookInfo;
                 if (ibook == null)
                 {
                     return null;
                 }
 
-                return new Book(ibook.Id,ibook.Title, ibook.Description, ibook.Author, ibook.Price, ibook.Type);
+                return new Book(ibook.Id, ibook.Title, ibook.Description, ibook.Author, ibook.Price, (BookType)Enum.Parse(typeof(BookType), ibook.Type, true));
             }
         }
     }

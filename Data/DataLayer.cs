@@ -31,7 +31,7 @@ namespace Data
                 if (connection != null)
                 {
                     connection.OnMessage = ConnectionMessageHandler;
-                    await SendMessage("GetBooks"); //TODO
+                    await SendMessage("GetBooks"); 
                 }
             }
             catch
@@ -43,7 +43,7 @@ namespace Data
         {
             if (connection != null)
             {
-                Console.WriteLine($"Server: Sending message {message}");
+                Console.WriteLine($"Client: Sending message {message}");
                 await connection.SendAsync(message);
             }
         }
@@ -60,7 +60,6 @@ namespace Data
         private bool ProcessMessage(string message)
         {
             string[] operands = message.Split(';');
-
             if (operands.Length < 1)
             {
                 return false;
@@ -75,7 +74,7 @@ namespace Data
                         {
                             return false;
                         }
-
+                        Storage.RemoveAll();
                         int count = Int32.Parse(operands[1]);
                         for (int idx = 0; idx < count; ++idx)
                         {

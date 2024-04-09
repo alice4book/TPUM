@@ -4,6 +4,7 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Diagnostics;
 
 namespace Data
 {
@@ -70,7 +71,7 @@ namespace Data
             {
                 try
                 {
-                    byte[] buffer = new byte[1024];
+                    byte[] buffer = new byte[1024 * 8];
                     while (true)
                     {
 

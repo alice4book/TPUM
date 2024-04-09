@@ -2,6 +2,8 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
@@ -21,6 +23,7 @@ namespace ViewModel
         {
             this.model = new Model.Model(null);
             this.model.PriceChanged += HandlePriceChanged;
+            this.model.Refresh += HandleChange;
             this.books = new ObservableCollection<ViewModelBook>();
             MainViewVisibility = this.model.MainViewVisibility;
             CartViewVisibility = this.model.CartViewVisibility;
@@ -228,7 +231,7 @@ namespace ViewModel
             }
         }
 
-        public void RefreshBooks(Guid id)
+        public void RefreshBooks(Guid id )
         {
             books.Clear();
             foreach (BookPresentation book in this.model.StoragePresentation.GetBooks())
@@ -240,6 +243,14 @@ namespace ViewModel
         public void HandlePriceChanged(object sender, Model.PriceChangeEventArgs args)
         {
             RefreshBooks(args.Id);
+        }
+        public void HandleChange()
+        {
+            books.Clear();
+            foreach (BookPresentation book in this.model.StoragePresentation.GetBooks())
+            {
+                books.Add(new ViewModelBook(book));
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

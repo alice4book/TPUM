@@ -13,6 +13,7 @@ namespace Logic
         public override IShop Shop { get; }
         private IDataLayer Data { get; }
         public event Action<List<BookDTO>> onBookRemoved;
+        public event Action<BookDTO> onBookAdded;
         public event Action<string> onConnectionMessage;
         public LogicLayer(IDataLayer data)
         {
@@ -20,6 +21,7 @@ namespace Logic
             Shop = new Shop(Data.Storage);
             data.onConnectionMessage += ConnectionMessageHandler;
             data.Storage.onBookRemoved += HandleBookRemoved;
+            data.Storage.onBookAdded += HandleBookAdded;
         }
 
         void ConnectionMessageHandler(string message)
@@ -34,6 +36,10 @@ namespace Logic
         void HandleBookRemoved(List<IBook> books)
         {
             onBookRemoved?.Invoke(ToBookDTO(books));
+        }
+        void HandleBookAdded(IBook book)
+        {
+            onBookAdded?.Invoke(ToBookDTO(book));
         }
         internal static List<BookDTO> ToBookDTO(List<IBook> books)
         {
@@ -51,6 +57,21 @@ namespace Logic
                 });
             }
             return result;
+        }
+        internal static BookDTO ToBookDTO(IBook book)
+        {
+
+                BookDTO dto = new BookDTO
+                {
+                    Title = book.Title,
+                    Description = book.Description,
+                    Author = book.Author,
+                    Price = book.Price,
+                    Type = book.Type.ToString(),
+                    Id = book.Id
+                };
+            
+            return dto;
         }
     }
 }

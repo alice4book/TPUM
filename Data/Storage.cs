@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,7 +31,7 @@ namespace Data
         {
             lock(bookLock)
             {
-                if (book == null)
+                if (book != null)
                 {
                     if (!Stock.Contains(book))
                     {
@@ -40,20 +41,25 @@ namespace Data
                 }
             }
         }
+        public void RemoveAll()
+        {
+            lock (bookLock)
+            {
+                Stock.Clear();
+            }
+        }
 
         public void RemoveBooks(List<IBook> books)
         {
             lock (bookLock)
             {
-                //books.ForEach(book => Stock.Remove(book));
-                foreach (IBook book in Stock)
+                foreach (IBook book in books)
                 {
                     if (Stock.Remove(book))
                     {
                         onBookRemoved?.Invoke(books);
                     }
                 }
-
             }
         }
 

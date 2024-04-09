@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +17,6 @@ namespace ServerPresention
         public PresentationLayer(ILogicLayer logicLayer)
         {
             _logicLayer = logicLayer;
-
             _logicLayer.onBookRemoved += HandleBookRemoved;
         }
 
@@ -60,7 +60,16 @@ namespace ServerPresention
                         string response = $"SendBooks;{books.Count}";
                         foreach (BookDTO book in books)
                         {
-                            string bookstr = $";{Serializer.SerializeBook(book)}";
+                            BookInfo.BookInfo bookInfo = new BookInfo.BookInfo
+                            {
+                                Title = book.Title,
+                                Description = book.Description,
+                                Author = book.Author,
+                                Price = book.Price,
+                                Type = book.Type,
+                                Id = book.Id
+                            };
+                            string bookstr = $";{Serializer.SerializeBook(bookInfo)}";
                             response += bookstr;
                         }
 

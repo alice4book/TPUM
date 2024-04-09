@@ -1,4 +1,5 @@
-﻿using Logic;
+﻿using Data;
+using Logic;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,6 +18,7 @@ namespace Model
         public CartPresentation CartPresentation;
 
         public event EventHandler<PriceChangeEventArgs>? PriceChanged;
+        public event Action? Refresh;
 
         public StoragePresentation StoragePresentation { get; private set; }
         public Model(ILogicLayer? iLogicLayer) 
@@ -27,6 +29,8 @@ namespace Model
             MainViewVisibility = "Visible";
             CartViewVisibility = "Hidden";
             this.iLogicLayer.Shop.PriceChanged += OnPriceChanged;
+            this.iLogicLayer.onBookRemoved += HandleBookRemoved;
+            this.iLogicLayer.onBookAdded += HandleBookAdded;
 
         }
 
@@ -35,10 +39,19 @@ namespace Model
             PriceChanged?.Invoke(this, new PriceChangeEventArgs(e.Id, e.Price));
         }
 
+        public void HandleBookRemoved(List<BookDTO> books)
+        {
+            Refresh?.Invoke();
+        }
+
         public void Connect()
         {
             iLogicLayer.Connect(new Uri("ws://localhost:8888"));
         }
 
+        public void HandleBookAdded(BookDTO info)
+        {
+            Refresh?.Invoke();
+        }
     }
 }
