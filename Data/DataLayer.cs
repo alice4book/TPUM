@@ -21,6 +21,7 @@ namespace Data
         {
             Storage = storage ?? new Storage();
             context = SynchronizationContext.Current;
+            Storage.onBookRemoved += SendRemovingMessage;
         }
 
         public override async Task Connect(Uri uri)
@@ -39,6 +40,7 @@ namespace Data
                 connection = null;
             }
         }
+
         public override async Task SendMessage(string message)
         {
             if (connection != null)
@@ -46,6 +48,28 @@ namespace Data
                 Console.WriteLine($"Client: Sending message {message}");
                 await connection.SendAsync(message);
             }
+        }
+
+
+        private async void SendRemovingMessage(List<IBook> books)
+        {
+            string response = $"RemoveBooks;{books.Count}";
+            foreach (IBook book in books)
+            {
+                BookInfo.BookInfo bookInfo = new BookInfo.BookInfo
+                {
+                    Title = book.Title,
+                    Description = book.Description,
+                    Author = book.Author,
+                    Price = book.Price,
+                    Type = book.Type.ToString(),
+                    Id = book.Id
+                };
+                string bookstr = $";{Serializer.SerializeBook(bookInfo)}";
+                response += bookstr;
+            }
+
+            await SendMessage(response);
         }
 
         public override void ConnectionMessageHandler(string message)

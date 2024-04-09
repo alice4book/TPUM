@@ -61,6 +61,7 @@ namespace LogicTest
 
         public event EventHandler<PriceChangeEventArgs> PriceChange;
         public event Action<List<IBook>> onBookRemoved;
+        public event Action<IBook> onBookAdded;
 
         public StorageMock()
         {
@@ -121,6 +122,11 @@ namespace LogicTest
         }
 
         public void AddBook(IBook books)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveAll()
         {
             throw new NotImplementedException();
         }

@@ -76,8 +76,43 @@ namespace ServerPresention
                         SendMessage(response);
                         break;
                     }
-            }
+                case "RemoveBooks":
+                    {
 
+                        if (operands.Length < 2)
+                        {
+                            break;
+                        }
+                        List<BookDTO> booksToRemove = new List<BookDTO>();
+                        int count = Int32.Parse(operands[1]);
+                        for (int idx = 0; idx < count; ++idx)
+                        {
+                            int offset = 2 + idx;
+                            BookDTO book = Serializer.DeserializeBook(operands[offset]);
+                            booksToRemove.Add(book);
+                        }
+                        Console.WriteLine($"Server: Finished removing books "+ _logicLayer.Shop.Sell(booksToRemove));
+                        List<BookDTO> books = _logicLayer.Shop.GetBooks();
+                        string response = $"SendBooks;{books.Count}";
+                        foreach (BookDTO book in books)
+                        {
+                            BookInfo.BookInfo bookInfo = new BookInfo.BookInfo
+                            {
+                                Title = book.Title,
+                                Description = book.Description,
+                                Author = book.Author,
+                                Price = book.Price,
+                                Type = book.Type,
+                                Id = book.Id
+                            };
+                            string bookstr = $";{Serializer.SerializeBook(bookInfo)}";
+                            response += bookstr;
+                        }
+
+                        SendMessage(response);
+                        break;
+                    }
+            }
         }
 
         public async Task SendMessage(string message)

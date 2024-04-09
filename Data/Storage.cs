@@ -11,8 +11,8 @@ namespace Data
     {
         public event EventHandler<PriceChangeEventArgs> PriceChange;
         public event Action<List<IBook>> onBookRemoved;
-        public event Action<IBook> onBookAdded;
         private readonly object bookLock = new object();
+        public event Action? Refresh;
         public List<IBook> Stock { get; }
 
         public Storage()
@@ -36,7 +36,7 @@ namespace Data
                     if (!Stock.Contains(book))
                     {
                         Stock.Add(book);
-                        onBookAdded?.Invoke(book);
+                        Refresh?.Invoke();
                     }
                 }
             }
@@ -46,6 +46,7 @@ namespace Data
             lock (bookLock)
             {
                 Stock.Clear();
+                Refresh?.Invoke();
             }
         }
 
@@ -53,13 +54,7 @@ namespace Data
         {
             lock (bookLock)
             {
-                foreach (IBook book in books)
-                {
-                    if (Stock.Remove(book))
-                    {
-                        onBookRemoved?.Invoke(books);
-                    }
-                }
+                onBookRemoved?.Invoke(books);
             }
         }
 
@@ -93,7 +88,6 @@ namespace Data
             {
                 IBook book = Stock.Find(x => x.Id.Equals(id));
                 if (book == null)
-                    return;
                 if (Math.Abs(newPrice - book.Price) < 0.01f)
                     return;
                 book.Price = newPrice;

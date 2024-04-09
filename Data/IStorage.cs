@@ -20,7 +20,7 @@ namespace Data
         public void ChangePrice(Guid id, float newPrice);
         public IBook CreateBook(string title, string description, string author, float price, BookType type);
         public event Action<List<IBook>> onBookRemoved;
-        public event Action<IBook> onBookAdded;
+        public event Action Refresh;
 
     }
 }

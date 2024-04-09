@@ -50,7 +50,7 @@ namespace DataServer
             lock (bookLock)
             {
                 //books.ForEach(book => Stock.Remove(book));
-                foreach (IBook book in Stock)
+                foreach (IBook book in books)
                 {
                     if (Stock.Remove(book))
                     {

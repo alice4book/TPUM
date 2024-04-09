@@ -29,8 +29,7 @@ namespace Model
             MainViewVisibility = "Visible";
             CartViewVisibility = "Hidden";
             this.iLogicLayer.Shop.PriceChanged += OnPriceChanged;
-            this.iLogicLayer.onBookRemoved += HandleBookRemoved;
-            this.iLogicLayer.onBookAdded += HandleBookAdded;
+            this.iLogicLayer.Shop.Refresh += RefreshBooks;
 
         }
 
@@ -38,8 +37,7 @@ namespace Model
         {
             PriceChanged?.Invoke(this, new PriceChangeEventArgs(e.Id, e.Price));
         }
-
-        public void HandleBookRemoved(List<BookDTO> books)
+        public void RefreshBooks()
         {
             Refresh?.Invoke();
         }
@@ -49,9 +47,5 @@ namespace Model
             iLogicLayer.Connect(new Uri("ws://localhost:8888"));
         }
 
-        public void HandleBookAdded(BookDTO info)
-        {
-            Refresh?.Invoke();
-        }
     }
 }

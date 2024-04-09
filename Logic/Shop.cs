@@ -12,6 +12,7 @@ namespace Logic
     internal class Shop : IShop
     {
         public event EventHandler<PriceChangeEventArgs> PriceChanged;
+        public event Action? Refresh;
 
         private IStorage storage;
 
@@ -21,6 +22,7 @@ namespace Logic
             this.storage = storage;
             Sale = new Sale(storage);
             storage.PriceChange += OnPriceChanged;
+            storage.Refresh += RefreshBooks;
         }
 
         public List<BookDTO> GetBooks(bool onSale = true)
@@ -64,6 +66,10 @@ namespace Logic
         {
             EventHandler<PriceChangeEventArgs> handler = PriceChanged;
             handler?.Invoke(this, new Logic.PriceChangeEventArgs(e.Id, e.Price));
+        }
+        private void RefreshBooks()
+        {
+            Refresh?.Invoke();
         }
 
     }

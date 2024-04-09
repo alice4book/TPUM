@@ -9,6 +9,7 @@ namespace Logic
     public interface IShop
     {
         public event EventHandler<PriceChangeEventArgs> PriceChanged;
+        public event Action Refresh;
 
         List<BookDTO> GetBooks(bool onSale = true);
         bool Sell(List<BookDTO> books);

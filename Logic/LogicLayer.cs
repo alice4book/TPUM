@@ -12,16 +12,12 @@ namespace Logic
     {
         public override IShop Shop { get; }
         private IDataLayer Data { get; }
-        public event Action<List<BookDTO>> onBookRemoved;
-        public event Action<BookDTO> onBookAdded;
         public event Action<string> onConnectionMessage;
         public LogicLayer(IDataLayer data)
         {
             Data = data;
             Shop = new Shop(Data.Storage);
             data.onConnectionMessage += ConnectionMessageHandler;
-            data.Storage.onBookRemoved += HandleBookRemoved;
-            data.Storage.onBookAdded += HandleBookAdded;
         }
 
         void ConnectionMessageHandler(string message)
@@ -33,14 +29,7 @@ namespace Logic
         {
             Data.Connect(uri);
         }
-        void HandleBookRemoved(List<IBook> books)
-        {
-            onBookRemoved?.Invoke(ToBookDTO(books));
-        }
-        void HandleBookAdded(IBook book)
-        {
-            onBookAdded?.Invoke(ToBookDTO(book));
-        }
+
         internal static List<BookDTO> ToBookDTO(List<IBook> books)
         {
             List <BookDTO> result = new List <BookDTO>();

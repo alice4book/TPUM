@@ -23,7 +23,7 @@ namespace ViewModel
         {
             this.model = new Model.Model(null);
             this.model.PriceChanged += HandlePriceChanged;
-            this.model.Refresh += HandleChange;
+            this.model.Refresh += RefreshBooks;
             this.books = new ObservableCollection<ViewModelBook>();
             MainViewVisibility = this.model.MainViewVisibility;
             CartViewVisibility = this.model.CartViewVisibility;
@@ -166,10 +166,14 @@ namespace ViewModel
             CartPresentation.Buy();
             CartSum = cartPresentation.Sum();
 
-            Books.Clear();
+            books.Clear();
             foreach (BookPresentation book in model.StoragePresentation.GetBooks())
             {
                 books.Add(new ViewModelBook(book));
+            }
+            if(books.Count == 0)
+            {
+                OnPropertyChanged("Books");
             }
         }
 
@@ -231,7 +235,7 @@ namespace ViewModel
             }
         }
 
-        public void RefreshBooks(Guid id )
+        public void RefreshBooks( )
         {
             books.Clear();
             foreach (BookPresentation book in this.model.StoragePresentation.GetBooks())
@@ -242,16 +246,9 @@ namespace ViewModel
 
         public void HandlePriceChanged(object sender, Model.PriceChangeEventArgs args)
         {
-            RefreshBooks(args.Id);
+            RefreshBooks();
         }
-        public void HandleChange()
-        {
-            books.Clear();
-            foreach (BookPresentation book in this.model.StoragePresentation.GetBooks())
-            {
-                books.Add(new ViewModelBook(book));
-            }
-        }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
