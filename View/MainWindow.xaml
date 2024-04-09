@@ -20,6 +20,7 @@
                     <Button Content="Fantasy" MinHeight="50" MinWidth="80" Margin="5 5" Command= "{Binding FantasyButtonClick}"/>
                     <Button Content="Adventure" MinHeight="50" MinWidth="80" Margin="5 5" Command= "{Binding AdventureButtonClick}"/>
                     <Button Content="Cart" MinHeight="50" MinWidth="80" Margin="50 5" Command= "{Binding CartButtonClick}"/>
+                    <Button Content="Connect" MinHeight="50" MinWidth="80" Margin="50 5" Command= "{Binding ConnectButtonClick}"/>
                 </StackPanel>
                 <StackPanel Width="556" >
                     <ScrollViewer Height="414" Width="844">

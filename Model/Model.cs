@@ -34,5 +34,11 @@ namespace Model
         {
             PriceChanged?.Invoke(this, new PriceChangeEventArgs(e.Id, e.Price));
         }
+
+        public void Connect()
+        {
+            iLogicLayer.Connect(new Uri("ws://localhost:8888"));
+        }
+
     }
 }

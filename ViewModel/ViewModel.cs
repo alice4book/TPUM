@@ -40,6 +40,8 @@ namespace ViewModel
             MainPageButtonClick = new RelayCommand(MainPageButtonClickHandler);
             BuyButtonClick = new RelayCommand(BuyButtonClickHandler);
 
+            ConnectButtonClick = new RelayCommand(ConnectButtonClickHandler);
+
             BookButtonClick = new ParameterCommand<Guid>(BookButtonClickHandler);
         }
 
@@ -66,9 +68,14 @@ namespace ViewModel
         public ICommand AdventureButtonClick { get; set; }
         public ICommand CartButtonClick { get; set; }
         public ICommand BookButtonClick { get; set; }
+        public ICommand ConnectButtonClick { get; set; }
         public ICommand MainPageButtonClick { get; set; }
         public ICommand BuyButtonClick { get; set; }
 
+        private void ConnectButtonClickHandler()
+        {
+            this.model.Connect();
+        }
         private void CartButtonClickHandler()
         {
             CartViewVisibility = "Visible";

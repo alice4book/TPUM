@@ -17,5 +17,6 @@ namespace Logic
         {
             return new LogicLayer(data ?? IDataLayer.Create());
         }
+        public abstract Task Connect(Uri uri);
     }
 }

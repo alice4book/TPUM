@@ -27,7 +27,7 @@ namespace Logic
             onConnectionMessage?.Invoke(message);
         }
 
-        public async Task Connect(Uri uri)
+        public async override Task Connect(Uri uri)
         {
             Data.Connect(uri);
         }
