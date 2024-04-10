@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace ViewModel
@@ -77,7 +78,7 @@ namespace ViewModel
 
         private void ConnectButtonClickHandler()
         {
-            this.model.Connect();
+            Task.Run(() => model.Connect());
         }
         private void CartButtonClickHandler()
         {
@@ -160,35 +161,41 @@ namespace ViewModel
                     CartSum = cartPresentation.Sum();
                 }
             }
+            OnPropertyChanged("CartPresentationBooks");
         }
         public void BuyButtonClickHandler()
         {
-            CartPresentation.Buy();
-            CartSum = cartPresentation.Sum();
-
-            books.Clear();
-            foreach (BookPresentation book in model.StoragePresentation.GetBooks())
-            {
-                books.Add(new ViewModelBook(book));
-            }
-            if(books.Count == 0)
-            {
-                OnPropertyChanged("Books");
-            }
+            Task.Run(async () => await this.model.SellBooks());
+            OnPropertyChanged("CartPresentationBooks");
         }
 
-        public CartPresentation CartPresentation
+        public ObservableCollection<ViewModelBook> CartPresentationBooks
         {
             get
             {
-                return cartPresentation;
+                ObservableCollection <ViewModelBook> cartBooks = new ObservableCollection<ViewModelBook >();
+                foreach(var book in cartPresentation.Books)
+                {
+                    cartBooks.Add(new ViewModelBook(book));
+                }
+                return cartBooks;
             }
             set
             {
-                if (value.Equals(cartPresentation))
+                ObservableCollection<ViewModelBook> cartBooks = new ObservableCollection<ViewModelBook>();
+                foreach (var book in cartPresentation.Books)
+                {
+                    cartBooks.Add(new ViewModelBook(book));
+                }
+                if (value.Equals(cartBooks))
                     return;
-                cartPresentation = value;
-                OnPropertyChanged("CartPresentation");
+                ObservableCollection<BookPresentation> newCartBooks = new ObservableCollection<BookPresentation>();
+                foreach (var book in value)
+                {
+                    newCartBooks.Add(new BookPresentation(book.Title, book.Description, book.Author, book.Price, book.Type, book.Id));
+                }
+                cartPresentation.Books = newCartBooks;
+                OnPropertyChanged("CartPresentationBooks");
             }
         }
         public string MainViewVisibility
@@ -247,6 +254,8 @@ namespace ViewModel
             {
                 books.Add(new ViewModelBook(book));
             }
+            CartSum = cartPresentation.Sum();
+            OnPropertyChanged("CartPresentationBooks");
         }
 
 

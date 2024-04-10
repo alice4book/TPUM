@@ -27,8 +27,6 @@ namespace Model
             CartPresentation = new CartPresentation(new ObservableCollection<BookPresentation>(), this.iLogicLayer.Shop);
             MainViewVisibility = "Visible";
             CartViewVisibility = "Hidden";
-            //this.iLogicLayer.Shop.Refresh += RefreshBooks;
-
         }
 
         public void RefreshBooks()
@@ -36,9 +34,14 @@ namespace Model
             Refresh?.Invoke();
         }
 
-        public void Connect()
+        public async Task SellBooks()
         {
-            iLogicLayer.Connect(new Uri("ws://localhost:8888"));
+            await CartPresentation.Buy();
+        }
+
+        public async Task Connect()
+        {
+            await iLogicLayer.Connect(new Uri("ws://localhost:8888"));
         }
 
     }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,20 +35,15 @@ namespace Model
             return sum;
         }
 
-        public bool Buy()
+        public async Task Buy()
         {
             List<BookDTO> bookDTOs = new List<BookDTO>();
-
             foreach (BookPresentation bookPresentation in Books)
             {
                 bookDTOs.Add(Shop.GetBooks().FirstOrDefault(x => x.Id == bookPresentation.Id));
             }
-            bool res = Shop.Sell(bookDTOs);
-            if(res)
-            {
-                Books.Clear();
-            }
-            return res;
+            await Shop.Sell(bookDTOs);
+            Books.Clear();
         }
     }
 }

@@ -10,6 +10,6 @@ namespace Logic
     {
         public event EventHandler<PriceChangeEventArgs>? PriceChanged;
         List<BookDTO> GetBooks(bool onSale = true);
-        bool Sell(List<BookDTO> books);
+        Task Sell(List<BookDTO> books);
     }
 }

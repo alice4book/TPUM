@@ -140,6 +140,11 @@ namespace LogicTest
         {
             throw new NotImplementedException();
         }
+
+        Task IStorage.RemoveBooks(List<IBook> books)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class MockBook : IBook

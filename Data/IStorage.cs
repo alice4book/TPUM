@@ -9,7 +9,7 @@ namespace Data
     public interface IStorage : IObservable<PriceChangeEventArgs>
     {
         public List<IBook> Stock { get; }
-        public void RemoveBooks(List<IBook> books);
+        public Task RemoveBooks(List<IBook> books);
         public void AddBook(IBook books);
         public void RemoveAll();
         public List<IBook> GetBooksOfType(BookType type);

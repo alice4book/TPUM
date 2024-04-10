@@ -15,9 +15,8 @@ namespace Data
         }
         public abstract IStorage Storage { get; set; }
 
-        public event Action<string> onConnectionMessage;
+        public abstract event Action<string> onConnectionMessage;
         public abstract Task Connect(Uri uri);
-        public abstract Task SendMessage(string message);
         public abstract void ConnectionMessageHandler(string message);
 
     }

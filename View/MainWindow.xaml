@@ -49,7 +49,7 @@
                 </StackPanel>
                 <StackPanel Width="556" >
                     <ScrollViewer Height="414" Width="844">
-                        <ItemsControl ItemsSource="{Binding CartPresentation.Books}" Width="828" Height="526">
+                        <ItemsControl ItemsSource="{Binding CartPresentationBooks}" Width="828" Height="526">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Button Background="Coral"  Width="592" Height="100">

@@ -12,21 +12,29 @@ namespace Data
     internal class DataLayer : IDataLayer
     {
         private IStorage storage;
-        public event Action<string> onConnectionMessage;
-        private WebSocketConnection connection = null;
-        private SynchronizationContext context = SynchronizationContext.Current;
-
+        public event Action<string>? onMessage;
+        public override event Action<string> onConnectionMessage;
+        //private WebSocketConnection connection = null;
+        //private SynchronizationContext context = SynchronizationContext.Current;
+        IConnectionService connectionService;
         public override IStorage Storage { get => storage; set => storage = value; }
 
         internal DataLayer(IStorage storage = default) 
         {
-            Storage = storage ?? new Storage();
-            context = SynchronizationContext.Current;
+            connectionService = new ConnectionService();
+            Storage = storage ?? new Storage(connectionService);
             Storage.onBookRemoved += SendRemovingMessage;
         }
 
         public override async Task Connect(Uri uri)
         {
+            await connectionService.Connect(uri);
+            if (connectionService.IsConnected())
+            {
+                connectionService.Connection.OnMessage = ConnectionMessageHandler;
+                await connectionService.SendMessage("GetBooks");
+            }
+            /*
             try
             {
                 connection = await WebSocketClient.Connect(uri, log => { });
@@ -40,16 +48,9 @@ namespace Data
             {
                 connection = null;
             }
+            */
         }
 
-        public override async Task SendMessage(string message)
-        {
-            if (connection != null)
-            {
-                Console.WriteLine($"Client: Sending message {message}");
-                await connection.SendAsync(message);
-            }
-        }
 
 
         private async void SendRemovingMessage(List<IBook> books)
@@ -70,12 +71,12 @@ namespace Data
                 response += bookstr;
             }
 
-            await SendMessage(response);
+            await connectionService.SendMessage(response);
         }
 
         public override void ConnectionMessageHandler(string message)
         {
-            context.Post((obj) =>
+            connectionService.Context.Post((obj) =>
             {
                 ProcessMessage(message);
                 onConnectionMessage?.Invoke(message);

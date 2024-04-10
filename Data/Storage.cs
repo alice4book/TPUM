@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClientApi;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -12,13 +13,15 @@ namespace Data
     {
         public event Action<List<IBook>> onBookRemoved;
         private readonly object bookLock = new object();
+        private IConnectionService connectionService;
         public event Action? Refresh;
         private HashSet<IObserver<PriceChangeEventArgs>> observers;
         public List<IBook> Stock { get; }
 
-        public Storage()
+        public Storage(IConnectionService connectionService = default)
         {
             Stock = new List<IBook>();
+            this.connectionService = connectionService;
             observers = new HashSet<IObserver<PriceChangeEventArgs>>();
         }
 
@@ -38,7 +41,7 @@ namespace Data
                     if (!Stock.Contains(book))
                     {
                         Stock.Add(book);
-                        Refresh?.Invoke();
+                       // Refresh?.Invoke();
                     }
                 }
             }
@@ -48,16 +51,29 @@ namespace Data
             lock (bookLock)
             {
                 Stock.Clear();
-                Refresh?.Invoke();
+               // Refresh?.Invoke();
             }
         }
 
-        public void RemoveBooks(List<IBook> books)
+        public async Task RemoveBooks(List<IBook> books)
         {
-            lock (bookLock)
+            string response = $"RemoveBooks;{books.Count}";
+            foreach (IBook book in books)
             {
-                onBookRemoved?.Invoke(books);
+                BookInfo bookInfo = new BookInfo
+                {
+                    Title = book.Title,
+                    Description = book.Description,
+                    Author = book.Author,
+                    Price = book.Price,
+                    Type = book.Type.ToString(),
+                    Id = book.Id
+                };
+                string bookstr = $";{Serializer.SerializeBook(bookInfo)}";
+                response += bookstr;
             }
+            Debug.Assert(books.Count > 0);
+            await connectionService.SendMessage(response);
         }
 
         public List<IBook> GetBooksOfType(BookType type) 

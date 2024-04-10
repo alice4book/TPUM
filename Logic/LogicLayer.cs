@@ -27,7 +27,7 @@ namespace Logic
 
         public async override Task Connect(Uri uri)
         {
-            Data.Connect(uri);
+            await Data.Connect(uri);
         }
 
         internal static List<BookDTO> ToBookDTO(List<IBook> books)

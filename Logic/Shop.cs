@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using Data;
 
 namespace Logic
 {
     internal class Shop : IShop, IObserver<Data.PriceChangeEventArgs>
     {
-        public event Action? Refresh;
         public event EventHandler<PriceChangeEventArgs>? PriceChanged;
         private IDisposable StoragSubscriptionHandle;
         private IStorage storage;
@@ -14,7 +15,6 @@ namespace Logic
         public Shop(IStorage storage) 
         {
             this.storage = storage;
-            //storage.Refresh += RefreshBooks;
             StoragSubscriptionHandle = storage.Subscribe(this);
         }
 
@@ -38,18 +38,15 @@ namespace Logic
             return availableBooks;
         }
 
-        public bool Sell(List<BookDTO> books)
+        public async Task Sell(List<BookDTO> books)
         {
+            Debug.Assert(books.Count > 0);
             List<Guid> bookIds = new List<Guid>();
             foreach (BookDTO book in books)
                 bookIds.Add(book.Id);
             List<IBook> booksDataLayer = storage.GetBooksById(bookIds);
-            storage.RemoveBooks(booksDataLayer);
-            return true;
-        }
-        private void RefreshBooks()
-        {
-            Refresh?.Invoke();
+
+            await storage.RemoveBooks(booksDataLayer);
         }
 
         public void OnCompleted()
