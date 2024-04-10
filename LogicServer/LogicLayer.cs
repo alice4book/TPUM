@@ -12,18 +12,12 @@ namespace LogicServer
     {
         public override IShop Shop { get; }
         private IDataLayer Data { get; }
-        public event Action<List<BookDTO>> onBookRemoved;
         public LogicLayer(IDataLayer data)
         {
             Data = data;
             Shop = new Shop(Data.Storage);
-            data.Storage.onBookRemoved += HandleBookRemoved;
         }
 
-        void HandleBookRemoved(List<IBook> books)
-        {
-            onBookRemoved?.Invoke(ToBookDTO(books));
-        }
         internal static List<BookDTO> ToBookDTO(List<IBook> books)
         {
             List <BookDTO> result = new List <BookDTO>();

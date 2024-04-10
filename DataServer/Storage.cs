@@ -9,8 +9,6 @@ namespace DataServer
     internal class Storage : IStorage
     {
         public event EventHandler<PriceChangeEventArgs> PriceChange;
-        public event Action<List<IBook>> onBookRemoved;
-        public event Action<IBook> onBookAdded;
         private readonly object bookLock = new object();
         public List<IBook> Stock { get; }
 
@@ -39,7 +37,6 @@ namespace DataServer
                     if (!Stock.Contains(book))
                     {
                         Stock.Add(book);
-                        onBookAdded?.Invoke(book);
                     }
                 }
             }
@@ -54,7 +51,7 @@ namespace DataServer
                 {
                     if (Stock.Remove(book))
                     {
-                        onBookRemoved?.Invoke(books);
+                        //onBookRemoved?.Invoke(books);
                     }
                 }
 

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using ClientApi;
 
 namespace Data
 {
@@ -56,7 +57,7 @@ namespace Data
             string response = $"RemoveBooks;{books.Count}";
             foreach (IBook book in books)
             {
-                BookInfo.BookInfo bookInfo = new BookInfo.BookInfo
+                BookInfo bookInfo = new BookInfo
                 {
                     Title = book.Title,
                     Description = book.Description,
@@ -99,13 +100,16 @@ namespace Data
                             return false;
                         }
                         Storage.RemoveAll();
+                        List<IBook> books = new List<IBook>();
                         int count = Int32.Parse(operands[1]);
                         for (int idx = 0; idx < count; ++idx)
                         {
                             int offset = 2 + idx;
                             IBook book = Serializer.DeserializeBook(operands[offset]);
                             Storage.AddBook(book);
+                            books.Add(book);
                         }
+                        Storage.UpdateAllPrices(books);
                         break;
                     }
             }

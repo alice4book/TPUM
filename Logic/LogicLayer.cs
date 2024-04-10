@@ -49,16 +49,15 @@ namespace Logic
         }
         internal static BookDTO ToBookDTO(IBook book)
         {
-
-                BookDTO dto = new BookDTO
-                {
-                    Title = book.Title,
-                    Description = book.Description,
-                    Author = book.Author,
-                    Price = book.Price,
-                    Type = book.Type.ToString(),
-                    Id = book.Id
-                };
+            BookDTO dto = new BookDTO
+            {
+                Title = book.Title,
+                Description = book.Description,
+                Author = book.Author,
+                Price = book.Price,
+                Type = book.Type.ToString(),
+                Id = book.Id
+            };
             
             return dto;
         }

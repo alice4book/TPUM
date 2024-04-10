@@ -12,7 +12,7 @@ namespace LogicServer
     internal class Shop : IShop
     {
         public event EventHandler<PriceChangeEventArgs> PriceChanged;
-
+        public event Action PriceChangedRefresh;
         private IStorage storage;
 
         private ISale Sale;
@@ -64,6 +64,7 @@ namespace LogicServer
         {
             EventHandler<PriceChangeEventArgs> handler = PriceChanged;
             handler?.Invoke(this, new LogicServer.PriceChangeEventArgs(e.Id, e.Price));
+            PriceChangedRefresh.Invoke();
         }
 
     }

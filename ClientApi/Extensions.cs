@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data
+namespace ClientApi
 {
-    internal static class Extensions
+    public static class Extensions
     {
-        internal static ArraySegment<byte> GetArraySegment(this string mesg)
+        public static ArraySegment<byte> GetArraySegment(this string mesg)
         {
             byte[] buffer = Encoding.UTF8.GetBytes(mesg);
             return new ArraySegment<byte>(buffer);

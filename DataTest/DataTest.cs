@@ -75,7 +75,7 @@ namespace DataTest
             }
 
         }
-
+        /*
         [TestMethod]
         public void ChangePriceTest()
         {
@@ -86,5 +86,6 @@ namespace DataTest
             data.Storage.ChangePrice(book.Id, 100);
             Assert.AreEqual(100, book.Price);
         }
+        */
     }
 }

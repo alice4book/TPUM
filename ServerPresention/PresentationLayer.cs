@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LogicServer;
+using ClientApi;
 
 namespace ServerPresention
 {
@@ -17,7 +18,28 @@ namespace ServerPresention
         public PresentationLayer(ILogicLayer logicLayer)
         {
             _logicLayer = logicLayer;
-            _logicLayer.onBookRemoved += HandleBookRemoved;
+            _logicLayer.Shop.PriceChangedRefresh += OnPriceChanged;
+        }
+
+        void OnPriceChanged()
+        {
+            List<BookDTO> books = _logicLayer.Shop.GetBooks();
+            string response = $"SendBooks;{books.Count}";
+            foreach (BookDTO book in books)
+            {
+                BookInfo bookInfo = new BookInfo
+                {
+                    Title = book.Title,
+                    Description = book.Description,
+                    Author = book.Author,
+                    Price = book.Price,
+                    Type = book.Type,
+                    Id = book.Id
+                };
+                string bookstr = $";{Serializer.SerializeBook(bookInfo)}";
+                response += bookstr;
+            }
+            SendMessage(response);
         }
 
         public static IPresentationLayer CreateDefault()
@@ -60,7 +82,7 @@ namespace ServerPresention
                         string response = $"SendBooks;{books.Count}";
                         foreach (BookDTO book in books)
                         {
-                            BookInfo.BookInfo bookInfo = new BookInfo.BookInfo
+                            BookInfo bookInfo = new BookInfo
                             {
                                 Title = book.Title,
                                 Description = book.Description,
@@ -96,7 +118,7 @@ namespace ServerPresention
                         string response = $"SendBooks;{books.Count}";
                         foreach (BookDTO book in books)
                         {
-                            BookInfo.BookInfo bookInfo = new BookInfo.BookInfo
+                            BookInfo bookInfo = new BookInfo
                             {
                                 Title = book.Title,
                                 Description = book.Description,
@@ -124,9 +146,5 @@ namespace ServerPresention
             }
         }
 
-        public void HandleBookRemoved(List<BookDTO> books)
-        {
-
-        }
     }
 }

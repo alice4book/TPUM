@@ -6,13 +6,18 @@ namespace Logic
 {
     public class PriceChangeEventArgs : EventArgs
     {
-        public PriceChangeEventArgs(Guid id, float price) 
-        { 
+        public PriceChangeEventArgs(Guid id, float price)
+        {
             Id = id;
             Price = price;
         }
+        public PriceChangeEventArgs(Data.PriceChangeEventArgs value)
+        {
+            Id = value.Id;
+            Price = value.Price;
+        }
         public Guid Id { get; }
-        public float Price { get; }
+        public float Price { get; set; }
     }
 
 }

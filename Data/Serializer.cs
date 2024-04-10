@@ -1,15 +1,15 @@
 ﻿using System;
 using System.IO;
 using System.Xml.Serialization;
-using BookInfo;
+using ClientApi;
 
 namespace Data
 {
     public abstract class Serializer
     {
-        public static string SerializeBook(BookInfo.BookInfo book)
+        public static string SerializeBook(BookInfo book)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(BookInfo.BookInfo));
+            XmlSerializer serializer = new XmlSerializer(typeof(BookInfo));
             using (StringWriter writer = new StringWriter())
             {
                 serializer.Serialize(writer, book);
@@ -19,10 +19,10 @@ namespace Data
 
         public static IBook DeserializeBook(string book)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(BookInfo.BookInfo));
+            XmlSerializer serializer = new XmlSerializer(typeof(BookInfo));
             using (StringReader reader = new StringReader(book))
             {
-                BookInfo.BookInfo ibook = serializer.Deserialize(reader) as BookInfo.BookInfo;
+                BookInfo ibook = serializer.Deserialize(reader) as BookInfo;
                 if (ibook == null)
                 {
                     return null;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -9,15 +10,16 @@ namespace Data
 {
     internal class Storage : IStorage
     {
-        public event EventHandler<PriceChangeEventArgs> PriceChange;
         public event Action<List<IBook>> onBookRemoved;
         private readonly object bookLock = new object();
         public event Action? Refresh;
+        private HashSet<IObserver<PriceChangeEventArgs>> observers;
         public List<IBook> Stock { get; }
 
         public Storage()
         {
             Stock = new List<IBook>();
+            observers = new HashSet<IObserver<PriceChangeEventArgs>>();
         }
 
         public IBook CreateBook(string title, string description, string author, float price, BookType type)
@@ -82,24 +84,7 @@ namespace Data
             }
         }
 
-        public void ChangePrice(Guid id, float newPrice)
-        {
-            lock (bookLock)
-            {
-                IBook book = Stock.Find(x => x.Id.Equals(id));
-                if (book == null)
-                if (Math.Abs(newPrice - book.Price) < 0.01f)
-                    return;
-                book.Price = newPrice;
-                OnPriceChanged(book.Id, book.Price);
-            }
-        }
 
-        private void OnPriceChanged(Guid id, float price)
-        {
-            EventHandler<PriceChangeEventArgs> handler = PriceChange;
-            handler?.Invoke(this, new PriceChangeEventArgs(id, price));
-        }
         public List<IBook> GetBooksById(List<Guid> Ids)
         {
             List<IBook> books = new List<IBook>();
@@ -114,6 +99,64 @@ namespace Data
             }
             return books;
         }
+        public void UpdateAllPrices(List<IBook> newPrices)
+        {
+            if (newPrices == null)
+                return;
 
+            float sale = 0.0f;
+            Guid saleID;
+            lock (bookLock)
+            {
+                foreach(var newPrice in newPrices)
+                {
+                    foreach (var book in Stock)
+                    {
+                        if (book.Id == newPrice.Id)
+                        {
+                            if(newPrice.Price < book.Price)
+                            {
+                                sale = book.Price;
+                                saleID = book.Id;
+                            }
+                            book.Price = newPrice.Price;
+                        }
+                    }
+                }
+            }
+
+            foreach (IObserver<PriceChangeEventArgs>? observer in observers)
+            {
+                observer.OnNext(new PriceChangeEventArgs(saleID, sale));
+            }
+        }
+
+        public IDisposable Subscribe(IObserver<PriceChangeEventArgs> observer)
+        {
+            observers.Add(observer);
+            return new StorageDisposable(this, observer);
+        }
+
+        private class StorageDisposable : IDisposable
+        {
+            private readonly Storage storage;
+            private readonly IObserver<PriceChangeEventArgs> observer;
+
+            public StorageDisposable(Storage storage, IObserver<PriceChangeEventArgs> observer)
+            {
+                this.storage = storage;
+                this.observer = observer;
+            }
+
+            public void Dispose()
+            {
+                storage.UnSubscribe(observer);
+            }
+        }
+
+        private void UnSubscribe(IObserver<PriceChangeEventArgs> observer)
+        {
+            observers.Remove(observer);
+        }
     }
 }

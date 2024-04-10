@@ -22,8 +22,8 @@ namespace ViewModel
         public ViewModel()
         {
             this.model = new Model.Model(null);
-            this.model.PriceChanged += HandlePriceChanged;
             this.model.Refresh += RefreshBooks;
+            this.model.StoragePresentation.PriceChanged += HandlePriceChanged;
             this.books = new ObservableCollection<ViewModelBook>();
             MainViewVisibility = this.model.MainViewVisibility;
             CartViewVisibility = this.model.CartViewVisibility;
@@ -235,6 +235,11 @@ namespace ViewModel
             }
         }
 
+        private void HandlePriceChanged(object sender, PriceChangeEventArgs args)
+        {
+            RefreshBooks();
+        }
+
         public void RefreshBooks( )
         {
             books.Clear();
@@ -244,10 +249,6 @@ namespace ViewModel
             }
         }
 
-        public void HandlePriceChanged(object sender, Model.PriceChangeEventArgs args)
-        {
-            RefreshBooks();
-        }
 
 
         public event PropertyChangedEventHandler PropertyChanged;

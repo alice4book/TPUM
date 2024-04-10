@@ -59,9 +59,9 @@ namespace LogicTest
     {
         public List<IBook> Stock { get; }
 
-        public event EventHandler<PriceChangeEventArgs> PriceChange;
         public event Action<List<IBook>> onBookRemoved;
         public event Action<IBook> onBookAdded;
+        public event Action Refresh;
 
         public StorageMock()
         {
@@ -127,6 +127,16 @@ namespace LogicTest
         }
 
         public void RemoveAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateAllPrices(List<IBook> newPrices)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IDisposable Subscribe(IObserver<PriceChangeEventArgs> observer)
         {
             throw new NotImplementedException();
         }

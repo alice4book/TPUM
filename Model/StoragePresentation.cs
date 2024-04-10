@@ -12,9 +12,11 @@ namespace Model
     {
         private IShop Shop{get; set;}
 
+        public event EventHandler<PriceChangeEventArgs>? PriceChanged;
         public StoragePresentation(IShop shop)
         {
             Shop = shop;
+            shop.PriceChanged += (obj, args) => PriceChanged?.Invoke(this, new PriceChangeEventArgs(args));
         }
 
 

@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Data
 {
-    public interface IStorage
+    public interface IStorage : IObservable<PriceChangeEventArgs>
     {
-        public event EventHandler<PriceChangeEventArgs> PriceChange;
         public List<IBook> Stock { get; }
         public void RemoveBooks(List<IBook> books);
         public void AddBook(IBook books);
@@ -17,10 +16,10 @@ namespace Data
         public List<IBook> GetBooksByAuthor(string author);
         public List<IBook> GetBooksByTitle(string title);
         public List<IBook> GetBooksById(List<Guid> Ids);
-        public void ChangePrice(Guid id, float newPrice);
+        public void UpdateAllPrices(List<IBook> newPrices);
         public IBook CreateBook(string title, string description, string author, float price, BookType type);
+
         public event Action<List<IBook>> onBookRemoved;
-        public event Action Refresh;
 
     }
 }

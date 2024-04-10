@@ -1,44 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO.IsolatedStorage;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Data;
 
 namespace Logic
 {
-    internal class Shop : IShop
+    internal class Shop : IShop, IObserver<Data.PriceChangeEventArgs>
     {
-        public event EventHandler<PriceChangeEventArgs> PriceChanged;
         public event Action? Refresh;
-
+        public event EventHandler<PriceChangeEventArgs>? PriceChanged;
+        private IDisposable StoragSubscriptionHandle;
         private IStorage storage;
 
-        private ISale Sale;
         public Shop(IStorage storage) 
         {
             this.storage = storage;
-            Sale = new Sale(storage);
-            storage.PriceChange += OnPriceChanged;
-            storage.Refresh += RefreshBooks;
+            //storage.Refresh += RefreshBooks;
+            StoragSubscriptionHandle = storage.Subscribe(this);
         }
 
         public List<BookDTO> GetBooks(bool onSale = true)
         {
-            Tuple<Guid, float> sale = new Tuple<Guid, float>(Guid.Empty, 1f);
-            if (onSale)
-                sale = Sale.GetSpecialOffer();
-
             List<BookDTO> availableBooks = new List<BookDTO>();
             
             foreach(IBook book in storage.Stock)
             {
-                float price = book.Price;
-                if (book.Id.Equals(sale.Item1))
-                    price *= sale.Item2;
-
                 availableBooks.Add(new BookDTO 
                 { 
                     Title = book.Title,
@@ -62,15 +47,23 @@ namespace Logic
             storage.RemoveBooks(booksDataLayer);
             return true;
         }
-        private void OnPriceChanged(object sender, Data.PriceChangeEventArgs e)
-        {
-            EventHandler<PriceChangeEventArgs> handler = PriceChanged;
-            handler?.Invoke(this, new Logic.PriceChangeEventArgs(e.Id, e.Price));
-        }
         private void RefreshBooks()
         {
             Refresh?.Invoke();
         }
 
+        public void OnCompleted()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnError(Exception error)
+        {
+        }
+
+        public void OnNext(Data.PriceChangeEventArgs value)
+        {
+            PriceChanged?.Invoke(this, new PriceChangeEventArgs(value));
+        }
     }
 }
