@@ -1,4 +1,5 @@
-using Data;
+﻿using DataServer;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
 
 namespace DataTest
@@ -75,7 +76,6 @@ namespace DataTest
             }
 
         }
-        /*
         [TestMethod]
         public void ChangePriceTest()
         {
@@ -86,6 +86,6 @@ namespace DataTest
             data.Storage.ChangePrice(book.Id, 100);
             Assert.AreEqual(100, book.Price);
         }
-        */
+
     }
 }

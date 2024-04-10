@@ -1,4 +1,4 @@
-using Logic;
+﻿using LogicServer;
 
 namespace LogicTest
 {

@@ -6,27 +6,24 @@ namespace LogicTest
 {
     public class DataMock : IDataLayer
     {
-        private readonly IStorage storage = new StorageMock();
+        private IStorage storage = new StorageMock();
         public override IStorage Storage
         {
             get { return storage; }
-            set { throw new NotImplementedException(); }
+            set => storage = value;
         }
+
+        public override event Action<string> onConnectionMessage;
 
         public override Task Connect(Uri uri)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
         public override void ConnectionMessageHandler(string message)
         {
-            throw new NotImplementedException();
         }
 
-        public override Task SendMessage(string message)
-        {
-            throw new NotImplementedException();
-        }
     }
 
     public class BookMock : IBook
@@ -38,7 +35,8 @@ namespace LogicTest
         public string Author { get; }
 
         private float price;
-        public float Price {
+        public float Price
+        {
             get => price;
             set
             {
@@ -74,7 +72,7 @@ namespace LogicTest
 
         public void ChangePrice(Guid id, float newPrice)
         {
-            foreach (var book in Stock) 
+            foreach (var book in Stock)
             {
                 if (book.Id == id)
                 {
@@ -123,27 +121,27 @@ namespace LogicTest
 
         public void AddBook(IBook books)
         {
-            throw new NotImplementedException();
+            Stock.Add(books);
         }
 
         public void RemoveAll()
         {
-            throw new NotImplementedException();
+            Stock.Clear();
         }
 
         public void UpdateAllPrices(List<IBook> newPrices)
         {
-            throw new NotImplementedException();
         }
 
         public IDisposable Subscribe(IObserver<PriceChangeEventArgs> observer)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         Task IStorage.RemoveBooks(List<IBook> books)
         {
-            throw new NotImplementedException();
+            books.ForEach(book => Stock.Remove(book));
+            return Task.CompletedTask;
         }
     }
 
