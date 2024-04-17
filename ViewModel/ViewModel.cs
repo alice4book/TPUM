@@ -257,7 +257,7 @@ namespace ViewModel
                 books.Add(new ViewModelBook(book));
             }
 
-            Debug.WriteLine("RefreshBooks UpdateBooks");
+            //Debug.WriteLine("RefreshBooks UpdateBooks");
             CartSum = cartPresentation.Sum();
             OnPropertyChanged("CartPresentationBooks");
         }

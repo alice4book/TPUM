@@ -47,7 +47,7 @@ namespace Data
         {
             if (connection != null)
             {
-                Console.WriteLine($"Client: Sending message {message}");
+                //Console.WriteLine($"Client: Sending message {message}");
                 await connection.SendAsync(message);
             }
         }

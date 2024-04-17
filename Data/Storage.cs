@@ -65,7 +65,7 @@ namespace Data
                 Header = ServerStatics.RemoveBooksCommandHeader,
 				BookIDs = ids
             };
-            Debug.WriteLine("Command "+ServerStatics.RemoveBooksCommandHeader);
+            //Debug.WriteLine("Command "+ServerStatics.RemoveBooksCommandHeader);
             await connectionService.SendMessage(serializer.Serialize(command));
 
             GetBooksCommand getBooksCommand = new GetBooksCommand { Header = ServerStatics.GetBooksCommandHeader };
