@@ -74,7 +74,6 @@ namespace ServerPresention
             Serializer serializer = Serializer.Create();
             if (serializer.GetCommandHeader(message) == SellBookCommand.StaticHeader)
             {
-                
                 SellBookCommand sellBookCommand = serializer.Deserialize<SellBookCommand>(message);/*
                 try
                 {
@@ -84,6 +83,11 @@ namespace ServerPresention
                 {
                     Console.WriteLine($"Exception \"{exception.Message}\" caught during selling books");
                 }*/
+
+                List<Guid> bookIds = new List<Guid>();
+                if (sellBookCommand == null) { return; }
+                foreach(Guid book in sellBookCommand.BookIDs) { bookIds.Add(book); }
+                _logicLayer.Shop.Sell(bookIds);
                 //Console.WriteLine($"Send: {transactionMessage}");
                 //await webSocketConnection.SendAsync(transactionMessage);
             }
