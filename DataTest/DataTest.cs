@@ -75,17 +75,33 @@ namespace DataTest
             }
 
         }
-        /*
         [TestMethod]
-        public void ChangePriceTest()
+        public void UpdateBooks()
         {
             IDataLayer data = PrepareData();
-            IBook book = data.Storage.CreateBook("Hello", "World", "Author", 200, BookType.Horror);
-            data.Storage.Stock.Add(book);
-            Assert.AreEqual(200, book.Price);
-            data.Storage.ChangePrice(book.Id, 100);
-            Assert.AreEqual(100, book.Price);
+            IBook book1 = data.Storage.CreateBook("Hello", "World", "Author", 200, BookType.Horror);
+            IBook book2 = data.Storage.CreateBook("Hi", "World", "Hania", 200, BookType.Romance);
+            List<IBook> newBooks = new List<IBook>
+            {
+                book1,
+                book2
+            };
+            Assert.AreEqual(0, data.Storage.Stock.Count);
+            data.Storage.UpdateAllPrices(newBooks);
+            Assert.AreEqual(2, data.Storage.Stock.Count);
+
+            Assert.AreEqual(200, data.Storage.Stock[0].Price);
+            Assert.AreEqual(200, data.Storage.Stock[1].Price);
+            newBooks[0].Price = 100;
+            data.Storage.UpdateAllPrices(newBooks);
+            Assert.AreEqual(100, data.Storage.Stock[0].Price);
+            Assert.AreEqual(200, data.Storage.Stock[1].Price);
+
+            Assert.AreEqual(2, data.Storage.Stock.Count);
+            newBooks.Remove(book1 as IBook);
+            data.Storage.UpdateAllPrices(newBooks);
+            Assert.AreEqual(1, data.Storage.Stock.Count);
+            Assert.AreEqual(book2.Id, data.Storage.Stock[0].Id);
         }
-        */
     }
 }
