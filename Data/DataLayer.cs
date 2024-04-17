@@ -38,7 +38,6 @@ namespace Data
         public async Task RequestBooks()
         {
             Serializer serializer = Serializer.Create();
-            Debug.WriteLine("RequestBooks");
             GetBooksCommand getBooksCommand = new GetBooksCommand { Header = ServerStatics.GetBooksCommandHeader };
             await connectionService.SendMessage(serializer.Serialize(getBooksCommand));
         }
@@ -60,7 +59,7 @@ namespace Data
             if (response.Books == null)
                 return;
             List<IBook> newBooks = new List<IBook>();
-            foreach (var book in response.Books)
+            foreach (BookInfo book in response.Books)
             {
                 newBooks.Add(book.ToBook());
             }

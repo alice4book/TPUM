@@ -130,6 +130,7 @@ namespace Data
                     {
                         foreach (var book in Stock)
                         {
+
                             if (book.Id == newPrice.Id)
                             {
                                 if(newPrice.Price < book.Price)
@@ -138,12 +139,12 @@ namespace Data
                                     saleID = book.Id;
                                 }
                                 book.Price = newPrice.Price;
+                                break;
                             }
                         }
                     }
                 }
             }
-
             foreach (IObserver<PriceChangeEventArgs>? observer in observers)
             {
                 observer.OnNext(new PriceChangeEventArgs(saleID, sale));

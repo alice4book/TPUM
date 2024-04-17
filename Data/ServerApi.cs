@@ -22,13 +22,13 @@ namespace Data
         [JsonProperty("Id", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public Guid Id { get; set; }
 
-        [JsonProperty("Name", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("Title", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public string Title { get; set; }
 
         [JsonProperty("Description", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public string Description { get; set; }
 
-        [JsonProperty("IsSold", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("Author", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public string Author { get; set; }
 
         [JsonProperty("Price", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
@@ -54,7 +54,7 @@ namespace Data
     internal class RemoveBookCommand : ServerCommand
     {
         [JsonProperty("BookIDs", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public List<Guid> BookIDs { get; set; }
+        public ICollection<Guid> BookIDs { get; set; }
     }
 
     //Responses
