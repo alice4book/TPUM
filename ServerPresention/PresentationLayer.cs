@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using LogicServer;
-using ClientApi;
+﻿using LogicServer;
+using ConnectApi;
 
 namespace ServerPresention
 {
@@ -23,33 +17,24 @@ namespace ServerPresention
 
         void OnPriceChanged()
         {
-            List<BookDTO> books = _logicLayer.Shop.GetBooks();
-            string response = $"SendBooks;{books.Count}";
-            foreach (BookDTO book in books)
+            if (_connection == null )
             {
-                BookInfo bookInfo = new BookInfo
-                {
-                    Title = book.Title,
-                    Description = book.Description,
-                    Author = book.Author,
-                    Price = book.Price,
-                    Type = book.Type,
-                    Id = book.Id
-                };
-                string bookstr = $";{Serializer.SerializeBook(bookInfo)}";
-                response += bookstr;
+                return;
             }
-            SendMessage(response);
+            Console.WriteLine($"Sending books...");
+            SendBooksResponse serverResponse = new SendBooksResponse();
+            List<BookDTO> books = _logicLayer.Shop.GetBooks();
+            serverResponse.Books = books.Select(x => x.ToBookInfo()).ToArray();
+
+            Serializer serializer = Serializer.Create();
+            string response = serializer.Serialize(serverResponse);
+            Console.WriteLine(response);
+            Task task = Task.Run(async () => await SendMessage(response));
         }
 
         public static IPresentationLayer CreateDefault()
         {
             return new PresentationLayer(ILogicLayer.CreateDefault());
-        }
-        public async Task RunServer(int port)
-        {
-            Console.WriteLine("Server: Start");
-            await WebSocketServer.Server(port, ServerConnectionHandler);
         }
 
         internal void ServerConnectionHandler(WebSocketConnection connection)
@@ -60,13 +45,59 @@ namespace ServerPresention
                 Console.WriteLine("Server: Closing");
                 _connection = null;
             };
+            _connection = connection;
             connection.OnMessage = ConnectionMessageHandler;
 
-            _connection = connection;
+            Serializer serializer = Serializer.Create();
+            SendBooksResponse serverResponse = new SendBooksResponse();
+            List<BookDTO> books = _logicLayer.Shop.GetBooks();
+            serverResponse.Books = books.Select(x => x.ToBookInfo()).ToArray();
+
+            string response = serializer.Serialize(serverResponse);
+            Console.WriteLine(response);
+            Task task = Task.Run(async () => await SendMessage(response));
+
+        }
+        public async Task RunServer(int port)
+        {
+            Console.WriteLine("Server: Start");
+            await WebSocketServer.Server(port, ServerConnectionHandler);
         }
 
         public void ConnectionMessageHandler(string message)
         {
+            if (!_connection.IsConnected)
+            {
+                return;
+            }
+            Console.WriteLine($"New message: {message}");
+            Serializer serializer = Serializer.Create();
+            if (serializer.GetCommandHeader(message) == SellBookCommand.StaticHeader)
+            {
+                
+                SellBookCommand sellBookCommand = serializer.Deserialize<SellBookCommand>(message);/*
+                try
+                {
+                    _logicLayer.Shop.Sell(sellBookCommand.BookIDs);
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine($"Exception \"{exception.Message}\" caught during selling books");
+                }*/
+                //Console.WriteLine($"Send: {transactionMessage}");
+                //await webSocketConnection.SendAsync(transactionMessage);
+            }
+            else if (serializer.GetCommandHeader(message) == GetBooksCommand.StaticHeader)
+            {
+                SendBooksResponse serverResponse = new SendBooksResponse();
+                List<BookDTO> books = _logicLayer.Shop.GetBooks();
+                serverResponse.Books = books.Select(x => x.ToBookInfo()).ToArray();
+
+                string response = serializer.Serialize(serverResponse);
+                Console.WriteLine(response);
+                Task task = Task.Run(async () => await SendMessage(response));
+            }
+            /*
             Console.WriteLine($"Server: Received message {message}");
             string[] operands = message.Split(';');
             if (operands.Length < 1)
@@ -134,7 +165,7 @@ namespace ServerPresention
                         SendMessage(response);
                         break;
                     }
-            }
+            }*/
         }
 
         public async Task SendMessage(string message)

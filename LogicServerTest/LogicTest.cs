@@ -11,8 +11,8 @@ namespace LogicTest
         public void SellBook()
         {
             BookDTO book = logicLayer.Shop.GetBooks()[0];
-            List<BookDTO> bookDTOs = new List<BookDTO>();
-            bookDTOs.Add(book);
+            List<Guid> bookDTOs = new List<Guid>();
+            bookDTOs.Add(book.Id);
             int bookCount = logicLayer.Shop.GetBooks().Count;
             logicLayer.Shop.Sell(bookDTOs);
             Assert.AreEqual(bookCount - 1, logicLayer.Shop.GetBooks().Count);

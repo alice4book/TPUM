@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ClientApi
+namespace ConnectApi
 {
     public static class Extensions
     {

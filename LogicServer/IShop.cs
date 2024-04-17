@@ -12,6 +12,6 @@ namespace LogicServer
         public event Action PriceChangedRefresh;
 
         List<BookDTO> GetBooks(bool onSale = true);
-        bool Sell(List<BookDTO> books);
+        bool Sell(List<Guid> books);
     }
 }

@@ -51,12 +51,9 @@ namespace LogicServer
             return availableBooks;
         }
 
-        public bool Sell(List<BookDTO> books)
+        public bool Sell(List<Guid> books)
         {
-            List<Guid> bookIds = new List<Guid>();
-            foreach (BookDTO book in books)
-                bookIds.Add(book.Id);
-            List<IBook> booksDataLayer = storage.GetBooksById(bookIds);
+            List<IBook> booksDataLayer = storage.GetBooksById(books);
             storage.RemoveBooks(booksDataLayer);
             return true;
         }

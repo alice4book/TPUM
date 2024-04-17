@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace ClientApi
+namespace ConnectApi
 {
     public abstract class WebSocketConnection
     {

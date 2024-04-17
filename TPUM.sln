@@ -30,11 +30,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogicServer", "LogicServer\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerPresention", "ServerPresention\ServerPresention.csproj", "{396E4C75-33AE-401A-8607-4D26C6152429}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientApi", "ClientApi\ClientApi.csproj", "{7015B25B-3B84-4D37-A75D-AEAC22A74126}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConnectApi", "ClientApi\ConnectApi.csproj", "{7015B25B-3B84-4D37-A75D-AEAC22A74126}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataServerTest", "DataServerTest\DataServerTest.csproj", "{B4B22C38-5739-4324-A593-9C8EB4A80A24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataServerTest", "DataServerTest\DataServerTest.csproj", "{B4B22C38-5739-4324-A593-9C8EB4A80A24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicServerTest", "LogicServerTest\LogicServerTest.csproj", "{A390729C-E0EA-487A-82A9-C3A952222E68}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogicServerTest", "LogicServerTest\LogicServerTest.csproj", "{A390729C-E0EA-487A-82A9-C3A952222E68}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

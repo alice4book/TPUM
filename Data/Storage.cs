@@ -1,4 +1,4 @@
-﻿using ClientApi;
+﻿using ConnectApi;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -41,7 +41,6 @@ namespace Data
                     if (!Stock.Contains(book))
                     {
                         Stock.Add(book);
-                       // Refresh?.Invoke();
                     }
                 }
             }
@@ -51,31 +50,25 @@ namespace Data
             lock (bookLock)
             {
                 Stock.Clear();
-               // Refresh?.Invoke();
             }
         }
-
+        
         public async Task RemoveBooks(List<IBook> books)
         {
-            string response = $"RemoveBooks;{books.Count}";
+            List<Guid> ids = new List<Guid>();
             foreach (IBook book in books)
             {
-                BookInfo bookInfo = new BookInfo
-                {
-                    Title = book.Title,
-                    Description = book.Description,
-                    Author = book.Author,
-                    Price = book.Price,
-                    Type = book.Type.ToString(),
-                    Id = book.Id
-                };
-                string bookstr = $";{Serializer.SerializeBook(bookInfo)}";
-                response += bookstr;
+                ids.Add(book.Id);
             }
-            Debug.Assert(books.Count > 0);
-            await connectionService.SendMessage(response);
+            Serializer serializer = Serializer.Create();
+            RemoveBookCommand command = new RemoveBookCommand { 
+                Header = ServerStatics.RemoveBooksCommandHeader,
+				BookIDs = ids
+            };
+            
+            await connectionService.SendMessage(serializer.Serialize(command));
         }
-
+        
         public List<IBook> GetBooksOfType(BookType type) 
         {
             lock (bookLock)
@@ -124,18 +117,28 @@ namespace Data
             Guid saleID;
             lock (bookLock)
             {
-                foreach(var newPrice in newPrices)
+                if (newPrices.Count() > Stock.Count)
                 {
-                    foreach (var book in Stock)
+                    foreach (var newPrice in newPrices)
                     {
-                        if (book.Id == newPrice.Id)
+                        if(!Stock.Contains(newPrice))
+                            Stock.Add(newPrice);
+                    }
+                }
+                else { 
+                    foreach(var newPrice in newPrices)
+                    {
+                        foreach (var book in Stock)
                         {
-                            if(newPrice.Price < book.Price)
+                            if (book.Id == newPrice.Id)
                             {
-                                sale = book.Price;
-                                saleID = book.Id;
+                                if(newPrice.Price < book.Price)
+                                {
+                                    sale = book.Price;
+                                    saleID = book.Id;
+                                }
+                                book.Price = newPrice.Price;
                             }
-                            book.Price = newPrice.Price;
                         }
                     }
                 }

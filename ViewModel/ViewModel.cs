@@ -165,6 +165,8 @@ namespace ViewModel
         }
         public void BuyButtonClickHandler()
         {
+            if (this.model.CartPresentation.Books.Count <= 0)
+                return;
             Task.Run(async () => await this.model.SellBooks());
             OnPropertyChanged("CartPresentationBooks");
         }
@@ -254,6 +256,8 @@ namespace ViewModel
             {
                 books.Add(new ViewModelBook(book));
             }
+
+            Debug.WriteLine("RefreshBooks UpdateBooks");
             CartSum = cartPresentation.Sum();
             OnPropertyChanged("CartPresentationBooks");
         }
