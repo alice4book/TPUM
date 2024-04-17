@@ -8,7 +8,6 @@ namespace ConnectApi
         public virtual Action<string> OnMessage { set; protected get; } = x => { };
         public virtual Action OnClose { set; protected get; } = () => { };
         public virtual Action OnError { set; protected get; } = () => { };
-        public virtual bool IsConnected { get; }
 
         public async Task SendAsync(string message)
         {

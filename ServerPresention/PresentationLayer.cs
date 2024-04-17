@@ -47,16 +47,6 @@ namespace ServerPresention
             };
             _connection = connection;
             connection.OnMessage = ConnectionMessageHandler;
-
-            Serializer serializer = Serializer.Create();
-            SendBooksResponse serverResponse = new SendBooksResponse();
-            List<BookDTO> books = _logicLayer.Shop.GetBooks();
-            serverResponse.Books = books.Select(x => x.ToBookInfo()).ToArray();
-
-            string response = serializer.Serialize(serverResponse);
-            Console.WriteLine(response);
-            Task task = Task.Run(async () => await SendMessage(response));
-
         }
         public async Task RunServer(int port)
         {
@@ -66,30 +56,16 @@ namespace ServerPresention
 
         public void ConnectionMessageHandler(string message)
         {
-            if (!_connection.IsConnected)
-            {
-                return;
-            }
+            if(_connection == null) { return; }
             Console.WriteLine($"New message: {message}");
             Serializer serializer = Serializer.Create();
             if (serializer.GetCommandHeader(message) == SellBookCommand.StaticHeader)
             {
-                SellBookCommand sellBookCommand = serializer.Deserialize<SellBookCommand>(message);/*
-                try
-                {
-                    _logicLayer.Shop.Sell(sellBookCommand.BookIDs);
-                }
-                catch (Exception exception)
-                {
-                    Console.WriteLine($"Exception \"{exception.Message}\" caught during selling books");
-                }*/
-
+                SellBookCommand sellBookCommand = serializer.Deserialize<SellBookCommand>(message);
                 List<Guid> bookIds = new List<Guid>();
                 if (sellBookCommand == null) { return; }
                 foreach(Guid book in sellBookCommand.BookIDs) { bookIds.Add(book); }
                 _logicLayer.Shop.Sell(bookIds);
-                //Console.WriteLine($"Send: {transactionMessage}");
-                //await webSocketConnection.SendAsync(transactionMessage);
             }
             else if (serializer.GetCommandHeader(message) == GetBooksCommand.StaticHeader)
             {

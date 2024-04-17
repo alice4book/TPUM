@@ -52,7 +52,6 @@ namespace ServerPresention
                 return _webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Shutdown procedure started", CancellationToken.None);
             }
 
-
             public override string ToString()
             {
                 return _remoteEndPoint.ToString();

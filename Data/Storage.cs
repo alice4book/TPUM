@@ -65,8 +65,11 @@ namespace Data
                 Header = ServerStatics.RemoveBooksCommandHeader,
 				BookIDs = ids
             };
-            
+            Debug.WriteLine("Command "+ServerStatics.RemoveBooksCommandHeader);
             await connectionService.SendMessage(serializer.Serialize(command));
+
+            GetBooksCommand getBooksCommand = new GetBooksCommand { Header = ServerStatics.GetBooksCommandHeader };
+            await connectionService.SendMessage(serializer.Serialize(getBooksCommand));
         }
         
         public List<IBook> GetBooksOfType(BookType type) 
@@ -122,6 +125,15 @@ namespace Data
                     foreach (var newPrice in newPrices)
                     {
                         if(!Stock.Contains(newPrice))
+                            Stock.Add(newPrice);
+                    }
+                }else
+                if (newPrices.Count() != Stock.Count)
+                {
+                    Stock.Clear();
+                    foreach (var newPrice in newPrices)
+                    {
+                        if (!Stock.Contains(newPrice))
                             Stock.Add(newPrice);
                     }
                 }
